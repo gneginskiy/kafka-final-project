@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/commandApi" />
             <option value="$PROJECT_DIR$/command_api" />
             <option value="$PROJECT_DIR$/query_api" />
+            <option value="$PROJECT_DIR$/shared" />
           </set>
         </option>
       </GradleProjectSettings>
