@@ -1,2 +1,5 @@
 rootProject.name = 'otus-kafka-final-project'
+include 'commandApi'
+include 'command_api'
+include 'query_api'
 
