@@ -3,4 +3,5 @@ include 'commandApi'
 include 'command_api'
 include 'query_api'
 include 'shared'
+include 'cqrs_core'
 
