@@ -1,6 +1,5 @@
-package com.techbank.account.shared.events;
+package com.techbank.account.base.messages;
 
-import com.techbank.cqrs.base.events.BaseEventDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,5 +9,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class AccountClosedEventDto extends BaseEventDto {
+public abstract class Message {
+    private String id;
 }

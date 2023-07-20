@@ -1,6 +1,6 @@
-package com.techbank.cqrs.base.handler;
+package com.techbank.account.base.handler;
 
-import com.techbank.cqrs.base.domain.AggregateRoot;
+import com.techbank.account.base.domain.AggregateRoot;
 
 public interface EventSourcingHandler<T> {
     void save(AggregateRoot aggregateRoot);

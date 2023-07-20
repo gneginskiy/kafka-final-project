@@ -1,6 +1,6 @@
-package com.techbank.cqrs.base.events;
+package com.techbank.account.base.events;
 
-import com.techbank.cqrs.base.messages.Message;
+import com.techbank.account.base.messages.Message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

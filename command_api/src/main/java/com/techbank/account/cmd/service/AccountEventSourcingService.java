@@ -1,9 +1,9 @@
 package com.techbank.account.cmd.service;
 
 import com.techbank.account.cmd.aggregates.AccountAggregate;
-import com.techbank.cqrs.base.domain.AggregateRoot;
-import com.techbank.cqrs.base.handler.EventSourcingHandler;
-import com.techbank.cqrs.base.infrastructure.EventStore;
+import com.techbank.account.base.domain.AggregateRoot;
+import com.techbank.account.base.handler.EventSourcingHandler;
+import com.techbank.account.base.infrastructure.EventStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,8 +1,8 @@
-package com.techbank.account.shared.events;
+package com.techbank.account.events;
 
 
-import com.techbank.account.shared.dto.AccountType;
-import com.techbank.cqrs.base.events.BaseEventDto;
+import com.techbank.account.dto.AccountType;
+import com.techbank.account.base.events.BaseEventDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

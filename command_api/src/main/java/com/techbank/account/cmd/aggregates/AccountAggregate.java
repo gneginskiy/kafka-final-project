@@ -2,12 +2,12 @@ package com.techbank.account.cmd.aggregates;
 
 
 import com.techbank.account.cmd.commands.OpenAccountCommand;
-import com.techbank.account.shared.events.AccountClosedEventDto;
-import com.techbank.account.shared.events.AccountOpenedEventDto;
-import com.techbank.account.shared.events.FundsDepositedEventDto;
-import com.techbank.account.shared.events.FundsWithdrawnEventDto;
-import com.techbank.cqrs.base.domain.AggregateRoot;
-import com.techbank.cqrs.base.events.BaseEventDto;
+import com.techbank.account.events.AccountClosedEventDto;
+import com.techbank.account.events.AccountOpenedEventDto;
+import com.techbank.account.events.FundsDepositedEventDto;
+import com.techbank.account.events.FundsWithdrawnEventDto;
+import com.techbank.account.base.domain.AggregateRoot;
+import com.techbank.account.base.events.BaseEventDto;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;

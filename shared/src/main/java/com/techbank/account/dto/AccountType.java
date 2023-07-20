@@ -1,4 +1,4 @@
-package com.techbank.account.shared.dto;
+package com.techbank.account.dto;
 
 public enum AccountType {
     SAVINGS, CURRENT

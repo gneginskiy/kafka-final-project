@@ -1,6 +1,6 @@
 package com.techbank.account.cmd.repository;
 
-import com.techbank.cqrs.base.events.EventEntity;
+import com.techbank.account.base.events.EventEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

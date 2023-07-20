@@ -1,4 +1,4 @@
-package com.techbank.cqrs.base.events;
+package com.techbank.account.base.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
