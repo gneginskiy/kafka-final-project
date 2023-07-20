@@ -1,4 +1,4 @@
-package com.techbank.account.base.domain;
+package com.techbank.account.base.aggregate;
 
 import com.techbank.account.base.events.BaseEventDto;
 import lombok.Getter;

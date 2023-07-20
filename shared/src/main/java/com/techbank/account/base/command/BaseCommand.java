@@ -1,4 +1,4 @@
-package com.techbank.account.base.commands;
+package com.techbank.account.base.command;
 
 import com.techbank.account.base.messages.Message;
 import lombok.AllArgsConstructor;

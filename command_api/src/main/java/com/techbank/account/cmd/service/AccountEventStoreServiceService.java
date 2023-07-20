@@ -5,7 +5,7 @@ import com.techbank.account.cmd.repository.EventStoreRepository;
 import com.techbank.account.cmd.exceptions.ConcurrencyException;
 import com.techbank.account.base.events.BaseEventDto;
 import com.techbank.account.base.events.EventEntity;
-import com.techbank.account.base.infrastructure.EventStore;
+import com.techbank.account.base.infrastructure.EventStoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AccountEventStoreService implements EventStore {
+public class AccountEventStoreServiceService implements EventStoreService {
     private final EventStoreRepository eventStoreRepository;
 
     @Override

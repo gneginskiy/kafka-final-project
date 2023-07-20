@@ -1,8 +1,8 @@
 package com.techbank.account.cmd.service;
 
-import com.techbank.account.base.commands.BaseCommand;
-import com.techbank.account.base.commands.CommandHandlerMethod;
-import com.techbank.account.base.infrastructure.CommandDispatcher;
+import com.techbank.account.base.command.BaseCommand;
+import com.techbank.account.base.command.CommandHandlerMethod;
+import com.techbank.account.base.infrastructure.CommandDispatcherService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @AllArgsConstructor
-public class AccountCommandDispatcherService<T extends BaseCommand> implements CommandDispatcher<T> {
+public class AccountCommandDispatcherServiceService<T extends BaseCommand> implements CommandDispatcherService<T> {
     private final Map<Class<T>, List<CommandHandlerMethod<T>>> map = new ConcurrentHashMap<>(); //todo DI;
 
     @Override

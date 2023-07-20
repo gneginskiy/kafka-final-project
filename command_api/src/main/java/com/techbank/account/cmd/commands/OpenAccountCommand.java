@@ -1,7 +1,7 @@
 package com.techbank.account.cmd.commands;
 
 import com.techbank.account.dto.AccountType;
-import com.techbank.account.base.commands.BaseCommand;
+import com.techbank.account.base.command.BaseCommand;
 import lombok.Data;
 
 import java.math.BigDecimal;

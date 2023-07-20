@@ -6,7 +6,7 @@ import com.techbank.account.events.AccountClosedEventDto;
 import com.techbank.account.events.AccountOpenedEventDto;
 import com.techbank.account.events.FundsDepositedEventDto;
 import com.techbank.account.events.FundsWithdrawnEventDto;
-import com.techbank.account.base.domain.AggregateRoot;
+import com.techbank.account.base.aggregate.AggregateRoot;
 import com.techbank.account.base.events.BaseEventDto;
 import lombok.NoArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.techbank.account.base.commands;
+package com.techbank.account.base.command;
 
 @FunctionalInterface
 public interface CommandHandlerMethod<T extends BaseCommand> {
