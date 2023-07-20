@@ -1,4 +1,4 @@
-package com.techbank.account.cmd.domain;
+package com.techbank.account.cmd.handler;
 
 import com.techbank.account.cmd.domain.AccountAggregate;
 import com.techbank.cqrs.core.domain.AggregateRoot;
@@ -29,7 +29,6 @@ public class AccountEventSourcingHandler implements EventSourcingHandler<Account
         var aggregate = new AccountAggregate();
         var events = eventStore.getEvents(aggregateId);
         aggregate.replayEvents(events);
-
-        return null;
+        return aggregate;
     }
 }
