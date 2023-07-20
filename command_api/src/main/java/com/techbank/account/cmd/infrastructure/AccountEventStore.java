@@ -6,17 +6,13 @@ import com.techbank.account.cmd.infrastructure.exceptions.ConcurrencyException;
 import com.techbank.cqrs.core.events.BaseEvent;
 import com.techbank.cqrs.core.events.EventModel;
 import com.techbank.cqrs.core.infrastructure.EventStore;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
