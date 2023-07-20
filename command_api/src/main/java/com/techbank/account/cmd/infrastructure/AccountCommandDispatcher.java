@@ -1,8 +1,8 @@
 package com.techbank.account.cmd.infrastructure;
 
-import com.techbank.cqrs.core.commands.BaseCommand;
-import com.techbank.cqrs.core.commands.CommandHandlerMethod;
-import com.techbank.cqrs.core.infrastructure.CommandDispatcher;
+import com.techbank.cqrs.base.commands.BaseCommand;
+import com.techbank.cqrs.base.commands.CommandHandlerMethod;
+import com.techbank.cqrs.base.infrastructure.CommandDispatcher;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

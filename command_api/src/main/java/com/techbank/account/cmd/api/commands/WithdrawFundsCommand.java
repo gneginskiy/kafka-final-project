@@ -1,6 +1,6 @@
 package com.techbank.account.cmd.api.commands;
 
-import com.techbank.cqrs.core.commands.BaseCommand;
+import com.techbank.cqrs.base.commands.BaseCommand;
 import lombok.Data;
 
 import java.math.BigDecimal;

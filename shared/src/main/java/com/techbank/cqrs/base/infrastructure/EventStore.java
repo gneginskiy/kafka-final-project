@@ -1,6 +1,6 @@
-package com.techbank.cqrs.core.infrastructure;
+package com.techbank.cqrs.base.infrastructure;
 
-import com.techbank.cqrs.core.events.BaseEvent;
+import com.techbank.cqrs.base.events.BaseEvent;
 
 import java.util.Collection;
 import java.util.List;

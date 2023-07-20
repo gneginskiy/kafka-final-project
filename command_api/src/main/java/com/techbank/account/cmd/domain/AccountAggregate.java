@@ -6,8 +6,8 @@ import com.techbank.account.shared.events.AccountClosedEvent;
 import com.techbank.account.shared.events.AccountOpenedEvent;
 import com.techbank.account.shared.events.FundsDepositedEvent;
 import com.techbank.account.shared.events.FundsWithdrawnEvent;
-import com.techbank.cqrs.core.domain.AggregateRoot;
-import com.techbank.cqrs.core.events.BaseEvent;
+import com.techbank.cqrs.base.domain.AggregateRoot;
+import com.techbank.cqrs.base.events.BaseEvent;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;

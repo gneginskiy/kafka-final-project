@@ -1,7 +1,6 @@
 package com.techbank.account.cmd.domain;
 
-import com.techbank.cqrs.core.events.BaseEvent;
-import com.techbank.cqrs.core.events.EventModel;
+import com.techbank.cqrs.base.events.EventModel;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

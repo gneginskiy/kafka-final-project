@@ -1,14 +1,11 @@
 package com.techbank.account.cmd.handler;
 
 import com.techbank.account.cmd.domain.AccountAggregate;
-import com.techbank.cqrs.core.domain.AggregateRoot;
-import com.techbank.cqrs.core.events.BaseEvent;
-import com.techbank.cqrs.core.handler.EventSourcingHandler;
-import com.techbank.cqrs.core.infrastructure.EventStore;
+import com.techbank.cqrs.base.domain.AggregateRoot;
+import com.techbank.cqrs.base.handler.EventSourcingHandler;
+import com.techbank.cqrs.base.infrastructure.EventStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

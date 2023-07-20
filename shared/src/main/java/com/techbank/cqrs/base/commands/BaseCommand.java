@@ -1,6 +1,6 @@
-package com.techbank.cqrs.core.commands;
+package com.techbank.cqrs.base.commands;
 
-import com.techbank.cqrs.core.messages.Message;
+import com.techbank.cqrs.base.messages.Message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -1,8 +1,8 @@
-package com.techbank.cqrs.core.infrastructure;
+package com.techbank.cqrs.base.infrastructure;
 
 
-import com.techbank.cqrs.core.commands.BaseCommand;
-import com.techbank.cqrs.core.commands.CommandHandlerMethod;
+import com.techbank.cqrs.base.commands.BaseCommand;
+import com.techbank.cqrs.base.commands.CommandHandlerMethod;
 
 public interface CommandDispatcher <T extends BaseCommand> {
     void registerCommand(Class<T> type, CommandHandlerMethod<T> handler);

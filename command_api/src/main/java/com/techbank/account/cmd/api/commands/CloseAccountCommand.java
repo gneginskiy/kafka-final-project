@@ -1,11 +1,8 @@
 package com.techbank.account.cmd.api.commands;
 
-import com.techbank.cqrs.core.commands.BaseCommand;
-import lombok.AllArgsConstructor;
+import com.techbank.cqrs.base.commands.BaseCommand;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.math.BigDecimal;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

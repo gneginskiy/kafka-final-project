@@ -1,6 +1,6 @@
-package com.techbank.cqrs.core.domain;
+package com.techbank.cqrs.base.domain;
 
-import com.techbank.cqrs.core.events.BaseEvent;
+import com.techbank.cqrs.base.events.BaseEvent;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
