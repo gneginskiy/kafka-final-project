@@ -1,4 +1,4 @@
-package com.techbank.account.base.infrastructure;
+package com.techbank.account.base.service;
 
 import com.techbank.account.base.events.BaseEventDto;
 

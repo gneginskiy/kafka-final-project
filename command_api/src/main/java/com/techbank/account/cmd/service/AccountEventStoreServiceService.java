@@ -5,7 +5,7 @@ import com.techbank.account.cmd.repository.EventStoreRepository;
 import com.techbank.account.cmd.exceptions.ConcurrencyException;
 import com.techbank.account.base.events.BaseEventDto;
 import com.techbank.account.base.events.EventEntity;
-import com.techbank.account.base.infrastructure.EventStoreService;
+import com.techbank.account.base.service.EventStoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;

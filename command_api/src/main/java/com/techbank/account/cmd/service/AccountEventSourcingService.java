@@ -3,7 +3,7 @@ package com.techbank.account.cmd.service;
 import com.techbank.account.cmd.aggregates.AccountAggregate;
 import com.techbank.account.base.aggregate.AggregateRoot;
 import com.techbank.account.base.service.EventSourcingService;
-import com.techbank.account.base.infrastructure.EventStoreService;
+import com.techbank.account.base.service.EventStoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
