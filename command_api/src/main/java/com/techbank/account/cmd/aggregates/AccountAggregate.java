@@ -1,13 +1,13 @@
-package com.techbank.account.cmd.domain;
+package com.techbank.account.cmd.aggregates;
 
 
-import com.techbank.account.cmd.api.commands.OpenAccountCommand;
-import com.techbank.account.shared.events.AccountClosedEvent;
-import com.techbank.account.shared.events.AccountOpenedEvent;
-import com.techbank.account.shared.events.FundsDepositedEvent;
-import com.techbank.account.shared.events.FundsWithdrawnEvent;
+import com.techbank.account.cmd.commands.OpenAccountCommand;
+import com.techbank.account.shared.events.AccountClosedEventDto;
+import com.techbank.account.shared.events.AccountOpenedEventDto;
+import com.techbank.account.shared.events.FundsDepositedEventDto;
+import com.techbank.account.shared.events.FundsWithdrawnEventDto;
 import com.techbank.cqrs.base.domain.AggregateRoot;
-import com.techbank.cqrs.base.events.BaseEvent;
+import com.techbank.cqrs.base.events.BaseEventDto;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
@@ -27,38 +27,38 @@ public class AccountAggregate extends AggregateRoot {
     public void depositFunds(BigDecimal funds) {
         //todo: further validation
         if (funds.compareTo(BigDecimal.ZERO) < 0 || !active) throw new IllegalStateException("Illegal state");
-        raiseEvent(FundsDepositedEvent.builder().id(this.aggregateId).amount(funds).build());
+        raiseEvent(FundsDepositedEventDto.builder().id(this.aggregateId).amount(funds).build());
     }
 
     public void withdrawFunds(BigDecimal funds) {
         //todo: further validation
         if (funds.compareTo(balance) > 0 || !active) throw new IllegalStateException("Illegal state");
-        raiseEvent(FundsWithdrawnEvent.builder().id(this.aggregateId).amount(funds).build());
+        raiseEvent(FundsWithdrawnEventDto.builder().id(this.aggregateId).amount(funds).build());
     }
 
     public void close() {
-        raiseEvent(AccountClosedEvent.builder().id(this.aggregateId).build());
+        raiseEvent(AccountClosedEventDto.builder().id(this.aggregateId).build());
     }
 
 
     @Override
-    public void apply(BaseEvent event) {
-        if (event instanceof AccountOpenedEvent e) {
+    public void apply(BaseEventDto event) {
+        if (event instanceof AccountOpenedEventDto e) {
             active = true;
             this.balance = e.getOpeningBalance();
-        } else if (event instanceof AccountClosedEvent e) {
+        } else if (event instanceof AccountClosedEventDto e) {
             active = false;
-        } else if (event instanceof FundsDepositedEvent e) {
+        } else if (event instanceof FundsDepositedEventDto e) {
             balance = balance.add(e.getAmount());
-        } else if (event instanceof FundsWithdrawnEvent e) {
+        } else if (event instanceof FundsWithdrawnEventDto e) {
             balance = balance.subtract(e.getAmount());
         }
         this.version = Math.max(version, event.getVersion());
     }
 
     //extract to a separate converter
-    private static AccountOpenedEvent toEvent(OpenAccountCommand c) {
-        return AccountOpenedEvent.builder()
+    private static AccountOpenedEventDto toEvent(OpenAccountCommand c) {
+        return AccountOpenedEventDto.builder()
                 .id(c.getId())
                 .accountHolder(c.getAccountHolder())
                 .accountType(c.getAccountType())

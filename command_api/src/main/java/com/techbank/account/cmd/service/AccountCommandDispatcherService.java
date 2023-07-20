@@ -1,4 +1,4 @@
-package com.techbank.account.cmd.infrastructure;
+package com.techbank.account.cmd.service;
 
 import com.techbank.cqrs.base.commands.BaseCommand;
 import com.techbank.cqrs.base.commands.CommandHandlerMethod;
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @AllArgsConstructor
-public class AccountCommandDispatcher<T extends BaseCommand> implements CommandDispatcher<T> {
+public class AccountCommandDispatcherService<T extends BaseCommand> implements CommandDispatcher<T> {
     private final Map<Class<T>, List<CommandHandlerMethod<T>>> map = new ConcurrentHashMap<>(); //todo DI;
 
     @Override

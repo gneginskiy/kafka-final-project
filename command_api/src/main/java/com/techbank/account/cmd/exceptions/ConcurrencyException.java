@@ -1,4 +1,4 @@
-package com.techbank.account.cmd.infrastructure.exceptions;
+package com.techbank.account.cmd.exceptions;
 
 public class ConcurrencyException extends RuntimeException {
 }

@@ -1,6 +1,6 @@
 package com.techbank.cqrs.base.domain;
 
-import com.techbank.cqrs.base.events.BaseEvent;
+import com.techbank.cqrs.base.events.BaseEventDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -16,13 +16,13 @@ public abstract class AggregateRoot {
     @Getter
     @Setter
     protected int version;
-    private final List<BaseEvent> changes = new ArrayList<>();
+    private final List<BaseEventDto> changes = new ArrayList<>();
 
-    public List<BaseEvent> getUncommitedChanges() {
+    public List<BaseEventDto> getUncommitedChanges() {
         return changes.stream().filter(this::isUncommited).toList();
     }
 
-    private boolean isUncommited(BaseEvent baseEvent) {
+    private boolean isUncommited(BaseEventDto baseEventDto) {
         return true; //todo
     }
 
@@ -30,7 +30,7 @@ public abstract class AggregateRoot {
         changes.clear();
     }
 
-    protected void applyChange(BaseEvent e, boolean newEvent) {
+    protected void applyChange(BaseEventDto e, boolean newEvent) {
         try {
             this.apply(e);
         } finally {
@@ -38,13 +38,13 @@ public abstract class AggregateRoot {
         }
     }
 
-    public abstract void apply(BaseEvent event);
+    public abstract void apply(BaseEventDto event);
 
-    public void raiseEvent(BaseEvent event){
+    public void raiseEvent(BaseEventDto event){
         applyChange(event,true);
     }
 
-    public void replayEvents(Collection<BaseEvent> events){
+    public void replayEvents(Collection<BaseEventDto> events){
         events.forEach(event -> applyChange(event,false));
     }
 }

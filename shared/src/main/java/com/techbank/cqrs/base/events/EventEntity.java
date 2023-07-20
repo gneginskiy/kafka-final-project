@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class EventModel {
+public class EventEntity {
     @Id
     private String id;
     private Long timestamp;
@@ -20,5 +20,5 @@ public class EventModel {
     private String aggregateType;
     private int version;
     private String eventType;
-    private BaseEvent eventData;
+    private BaseEventDto eventData;
 }

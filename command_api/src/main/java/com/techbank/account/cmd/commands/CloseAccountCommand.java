@@ -1,4 +1,4 @@
-package com.techbank.account.cmd.api.commands;
+package com.techbank.account.cmd.commands;
 
 import com.techbank.cqrs.base.commands.BaseCommand;
 import lombok.Data;

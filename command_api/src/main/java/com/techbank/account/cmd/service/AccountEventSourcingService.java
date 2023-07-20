@@ -1,6 +1,6 @@
-package com.techbank.account.cmd.handler;
+package com.techbank.account.cmd.service;
 
-import com.techbank.account.cmd.domain.AccountAggregate;
+import com.techbank.account.cmd.aggregates.AccountAggregate;
 import com.techbank.cqrs.base.domain.AggregateRoot;
 import com.techbank.cqrs.base.handler.EventSourcingHandler;
 import com.techbank.cqrs.base.infrastructure.EventStore;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AccountEventSourcingHandler implements EventSourcingHandler<AccountAggregate> {
+public class AccountEventSourcingService implements EventSourcingHandler<AccountAggregate> {
     private final EventStore eventStore;
 
     @Override

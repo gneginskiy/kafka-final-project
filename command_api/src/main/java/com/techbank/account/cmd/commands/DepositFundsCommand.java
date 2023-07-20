@@ -1,4 +1,4 @@
-package com.techbank.account.cmd.api.commands;
+package com.techbank.account.cmd.commands;
 
 import com.techbank.cqrs.base.commands.BaseCommand;
 import lombok.Data;
@@ -6,6 +6,6 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class WithdrawFundsCommand extends BaseCommand {
+public class DepositFundsCommand extends BaseCommand {
     private BigDecimal  amount;
 }

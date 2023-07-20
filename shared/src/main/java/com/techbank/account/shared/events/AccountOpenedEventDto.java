@@ -2,7 +2,7 @@ package com.techbank.account.shared.events;
 
 
 import com.techbank.account.shared.dto.AccountType;
-import com.techbank.cqrs.base.events.BaseEvent;
+import com.techbank.cqrs.base.events.BaseEventDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class AccountOpenedEvent extends BaseEvent {
+public class AccountOpenedEventDto extends BaseEventDto {
     private String      accountHolder;
     private AccountType accountType;
     private BigDecimal  openingBalance;
