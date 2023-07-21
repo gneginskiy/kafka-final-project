@@ -5,7 +5,6 @@ import com.techbank.account.cmd.repository.EventStoreRepository;
 import com.techbank.account.cmd.exceptions.ConcurrencyException;
 import com.techbank.account.base.events.BaseEvent;
 import com.techbank.account.base.events.EventEntity;
-import com.techbank.account.base.service.EventStoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -16,11 +15,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AccountEventStoreService implements EventStoreService {
+public class AccountEventStoreService {
     private final EventStoreRepository eventStoreRepository;
     private final AccountEventProducer accountEventProducer;
 
-    @Override
     public void saveEvents(String aggregateId, Collection<BaseEvent> events, int expectedVersion) {
         var allEvents = eventStoreRepository.findByAggregateId(aggregateId);
         if (expectedVersion != -1 && allEvents.get(allEvents.size() - 1).getVersion() != expectedVersion) {
@@ -35,6 +33,15 @@ public class AccountEventStoreService implements EventStoreService {
             }
         }
     }
+    public List<BaseEvent> getEvents(String aggregateId) {
+        var eventModels = eventStoreRepository.findByAggregateId(aggregateId);
+        if (CollectionUtils.isEmpty(eventModels)) throw new RuntimeException("ouch..");
+        return eventModels
+                .stream()
+                .map(EventEntity::getEventData)
+                .toList();
+    }
+
 
     private static EventEntity toEventEntity(String aggregateId, int version, BaseEvent e) {
         return EventEntity
@@ -47,13 +54,5 @@ public class AccountEventStoreService implements EventStoreService {
                 .build();
     }
 
-    @Override
-    public List<BaseEvent> getEvents(String aggregateId) {
-        var eventModels = eventStoreRepository.findByAggregateId(aggregateId);
-        if (CollectionUtils.isEmpty(eventModels)) throw new RuntimeException("ouch..");
-        return eventModels
-                .stream()
-                .map(EventEntity::getEventData)
-                .toList();
-    }
+
 }
