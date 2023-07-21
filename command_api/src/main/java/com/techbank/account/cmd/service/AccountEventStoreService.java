@@ -30,8 +30,10 @@ public class AccountEventStoreService implements EventStoreService {
         var version = expectedVersion;
         for (var e : events) {
             e.setVersion(++version);
-            eventStoreRepository.save(toEventEntity(aggregateId, version, e));
-            accountEventProducer.produce(e.getClass().getSimpleName(), e);
+            var persistedEvent = eventStoreRepository.save(toEventEntity(aggregateId, version, e));
+            if (!persistedEvent.getId().isEmpty()) {
+                accountEventProducer.produce(e.getClass().getSimpleName(), e);
+            }
         }
     }
 
