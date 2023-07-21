@@ -1,10 +1,10 @@
 package com.techbank.account.cmd.controller;
 
-import com.techbank.account.base.service.CommandDispatcherService;
 import com.techbank.account.cmd.commands.CloseAccountCommand;
 import com.techbank.account.cmd.commands.DepositFundsCommand;
 import com.techbank.account.cmd.commands.OpenAccountCommand;
 import com.techbank.account.cmd.commands.WithdrawFundsCommand;
+import com.techbank.account.cmd.service.AccountCommandDispatcherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,35 +22,35 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AccountController {
     public static final String API_URL = "/api/v1/controller";
 
-    private final CommandDispatcherService commandDispatcher;
+    private final AccountCommandDispatcherService dispatcher;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity create(@RequestBody OpenAccountCommand cmd) {
+    public ResponseEntity<?> create(@RequestBody OpenAccountCommand cmd) {
         cmd.setId(UUID.randomUUID().toString());
-        commandDispatcher.send(cmd);
+        dispatcher.send(cmd);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "/{id}/close", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity create(@RequestBody CloseAccountCommand cmd) {
-        commandDispatcher.send(cmd);
+    public ResponseEntity<?> create(@RequestBody CloseAccountCommand cmd) {
+        dispatcher.send(cmd);
         return ResponseEntity.ok().build();
     }
 
 
     @PostMapping(path = "/{id}/withdraw", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity create(@RequestBody WithdrawFundsCommand cmd) {
-        commandDispatcher.send(cmd);
+    public ResponseEntity<?> create(@RequestBody WithdrawFundsCommand cmd) {
+        dispatcher.send(cmd);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(path = "/{id}/deposit", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity create(@RequestBody DepositFundsCommand cmd) {
-        commandDispatcher.send(cmd);
+    public ResponseEntity<?> create(@RequestBody DepositFundsCommand cmd) {
+        dispatcher.send(cmd);
         return ResponseEntity.ok().build();
     }
 
