@@ -1,7 +1,7 @@
 package com.techbank.account.base;
 
-import com.techbank.account.base.events.BaseEventDto;
+import com.techbank.account.base.events.BaseEvent;
 
 public interface EventProducer {
-    void produce(String topicName, BaseEventDto event);
+    void produce(String topicName, BaseEvent event);
 }
