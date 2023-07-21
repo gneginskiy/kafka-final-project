@@ -13,16 +13,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @AllArgsConstructor
-public class AccountCommandDispatcherServiceService<T extends BaseCommand> implements CommandDispatcherService<T> {
-    private final Map<Class<T>, List<CommandHandlerMethod<T>>> map = new ConcurrentHashMap<>(); //todo DI;
+public class AccountCommandDispatcherService implements CommandDispatcherService {
+    private final Map<Class, List<CommandHandlerMethod>> map = new ConcurrentHashMap<>(); //todo DI;
 
     @Override
-    public void registerCommand(Class<T> type, CommandHandlerMethod<T> handler) {
+    public  void registerCommand(Class type, CommandHandlerMethod handler) {
         map.computeIfAbsent(type, v -> new ArrayList<>()).add(handler);
     }
 
     @Override
-    public void send(T command) {
+    public void send(BaseCommand command) {
         map.getOrDefault(command.getClass(), List.of()).forEach(handler -> handler.handle(command));
     }
 }

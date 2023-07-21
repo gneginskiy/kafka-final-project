@@ -13,7 +13,7 @@ public class AccountEventSourcingService implements EventSourcingService<Account
     private final EventStoreService eventStoreService;
 
     @Override
-    public void save(AggregateRoot aggregateRoot) {
+    public void saveAggregate(AggregateRoot aggregateRoot) {
         var aggregateId       = aggregateRoot.getAggregateId();
         var uncommitedChanges = aggregateRoot.getUncommitedChanges();
         var version           = aggregateRoot.getVersion();
@@ -22,7 +22,7 @@ public class AccountEventSourcingService implements EventSourcingService<Account
     }
 
     @Override
-    public AccountAggregate getById(String aggregateId) {
+    public AccountAggregate getAggregateById(String aggregateId) {
         var aggregate = new AccountAggregate();
         var events = eventStoreService.getEvents(aggregateId);
         aggregate.replayEvents(events);

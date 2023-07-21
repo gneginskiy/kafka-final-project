@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AccountEventStoreServiceService implements EventStoreService {
+public class AccountEventStoreService implements EventStoreService {
     private final EventStoreRepository eventStoreRepository;
 
     @Override
