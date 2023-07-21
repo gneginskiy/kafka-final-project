@@ -15,15 +15,7 @@ public class AccountEventHandler {
     private final AccountRepository accountRepository;
 
     public void handle(AccountOpenedEvent evt) {
-        accountRepository.save(
-                new AccountEntity()
-                        .setAccountHolder(evt.getAccountHolder())
-                        .setAccountType(evt.getAccountType())
-                        .setCreatedAt(evt.getCreatedAt())
-                        .setActive(true)
-                        .setBalance(evt.getOpeningBalance())
-                        .setId(evt.getAccountHolder())
-        );
+        accountRepository.save(toEntity(evt));
     }
 
     public void handle(AccountClosedEvent evt) {
@@ -42,5 +34,15 @@ public class AccountEventHandler {
         var account = accountRepository.findById(evt.getId()).orElseThrow();
         account.setBalance(account.getBalance().subtract(evt.getAmount()));
         accountRepository.save(account);
+    }
+
+    private static AccountEntity toEntity(AccountOpenedEvent evt) {
+        return new AccountEntity()
+                .setAccountHolder(evt.getAccountHolder())
+                .setAccountType(evt.getAccountType())
+                .setCreatedAt(evt.getCreatedAt())
+                .setActive(true)
+                .setBalance(evt.getOpeningBalance())
+                .setId(evt.getAccountHolder());
     }
 }

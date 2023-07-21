@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class EventConsumerService {
-    private final KafkaTemplate<String, BaseEvent> kafkaTemplate;
     private final AccountEventHandler accountEventHandler;
 
     @KafkaListener(topics = {"AccountOpenedEvent"},groupId = "${spring.kafka.consumer.group-id}")

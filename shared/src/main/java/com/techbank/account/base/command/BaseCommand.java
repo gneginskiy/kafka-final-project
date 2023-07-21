@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class BaseCommand extends Message {
     public BaseCommand(String id) {
