@@ -20,5 +20,5 @@ public class EventEntity {
     private String aggregateType;
     private int version;
     private String eventType;
-    private BaseEventDto eventData;
+    private BaseEvent eventData;
 }

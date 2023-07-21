@@ -1,6 +1,6 @@
-package com.techbank.account.events;
+package com.techbank.account.dto.events;
 
-import com.techbank.account.base.events.BaseEventDto;
+import com.techbank.account.base.events.BaseEvent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,5 +10,5 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class AccountClosedEventDto extends BaseEventDto {
+public class AccountClosedEvent extends BaseEvent {
 }

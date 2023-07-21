@@ -1,6 +1,6 @@
-package com.techbank.account.events;
+package com.techbank.account.dto.events;
 
-import com.techbank.account.base.events.BaseEventDto;
+import com.techbank.account.base.events.BaseEvent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +12,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class FundsWithdrawnEventDto extends BaseEventDto {
+public class FundsWithdrawnEvent extends BaseEvent {
     private BigDecimal amount;
 }
