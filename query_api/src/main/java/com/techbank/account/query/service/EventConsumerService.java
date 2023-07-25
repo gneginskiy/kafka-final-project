@@ -1,14 +1,12 @@
 package com.techbank.account.query.service;
 
-import com.techbank.account.base.events.BaseEvent;
 import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountOpenedEvent;
-import com.techbank.account.dto.events.FundsDepositedEvent;
-import com.techbank.account.dto.events.FundsWithdrawnEvent;
+import com.techbank.account.dto.events.AccountFundsDepositedEvent;
+import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
 import com.techbank.account.query.event_handlers.AccountEventHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
@@ -31,13 +29,13 @@ public class EventConsumerService {
     }
 
     @KafkaListener(topics = {"FundsDepositedEvent"},groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(@Payload FundsDepositedEvent event, Acknowledgment ack) {
+    public void consume(@Payload AccountFundsDepositedEvent event, Acknowledgment ack) {
         accountEventHandler.handle(event);
         ack.acknowledge();
     }
 
     @KafkaListener(topics = {"FundsWithdrawnEvent"},groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(@Payload FundsWithdrawnEvent event, Acknowledgment ack) {
+    public void consume(@Payload AccountFundsWithdrawnEvent event, Acknowledgment ack) {
         accountEventHandler.handle(event);
         ack.acknowledge();
     }

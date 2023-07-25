@@ -2,8 +2,8 @@ package com.techbank.account.query.event_handlers;
 
 import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountOpenedEvent;
-import com.techbank.account.dto.events.FundsDepositedEvent;
-import com.techbank.account.dto.events.FundsWithdrawnEvent;
+import com.techbank.account.dto.events.AccountFundsDepositedEvent;
+import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
 import com.techbank.account.query.entity.AccountEntity;
 import com.techbank.account.query.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +24,13 @@ public class AccountEventHandler {
     }
 
 
-    public void handle(FundsDepositedEvent evt) {
+    public void handle(AccountFundsDepositedEvent evt) {
         var account = accountRepository.findById(evt.getId()).orElseThrow();
         account.setBalance(account.getBalance().add(evt.getAmount()));
         accountRepository.save(account);
     }
 
-    public void handle(FundsWithdrawnEvent evt) {
+    public void handle(AccountFundsWithdrawnEvent evt) {
         var account = accountRepository.findById(evt.getId()).orElseThrow();
         account.setBalance(account.getBalance().subtract(evt.getAmount()));
         accountRepository.save(account);

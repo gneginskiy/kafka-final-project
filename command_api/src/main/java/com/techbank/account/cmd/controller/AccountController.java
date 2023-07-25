@@ -4,7 +4,7 @@ import com.techbank.account.cmd.commands.CloseAccountCommand;
 import com.techbank.account.cmd.commands.DepositFundsCommand;
 import com.techbank.account.cmd.commands.OpenAccountCommand;
 import com.techbank.account.cmd.commands.WithdrawFundsCommand;
-import com.techbank.account.cmd.service.AccountCommandDispatcherService;
+import com.techbank.account.cmd.service.AccountCommandHandlerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,20 +22,20 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AccountController {
     public static final String API_URL = "/api/v1/controller";
 
-    private final AccountCommandDispatcherService dispatcher;
+    private final AccountCommandHandlerService accountService;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> create(@RequestBody OpenAccountCommand cmd) {
         cmd.setId(UUID.randomUUID().toString());
-        dispatcher.send(cmd);
+        accountService.handle(cmd);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "/{id}/close", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> create(@RequestBody CloseAccountCommand cmd) {
-        dispatcher.send(cmd);
+        accountService.handle(cmd);
         return ResponseEntity.ok().build();
     }
 
@@ -43,14 +43,14 @@ public class AccountController {
     @PostMapping(path = "/{id}/withdraw", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> create(@RequestBody WithdrawFundsCommand cmd) {
-        dispatcher.send(cmd);
+        accountService.handle(cmd);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(path = "/{id}/deposit", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> create(@RequestBody DepositFundsCommand cmd) {
-        dispatcher.send(cmd);
+        accountService.handle(cmd);
         return ResponseEntity.ok().build();
     }
 

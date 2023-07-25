@@ -4,8 +4,8 @@ package com.techbank.account.cmd.aggregates;
 import com.techbank.account.cmd.commands.OpenAccountCommand;
 import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountOpenedEvent;
-import com.techbank.account.dto.events.FundsDepositedEvent;
-import com.techbank.account.dto.events.FundsWithdrawnEvent;
+import com.techbank.account.dto.events.AccountFundsDepositedEvent;
+import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
 import com.techbank.account.base.aggregate.AggregateRoot;
 import com.techbank.account.base.events.BaseEvent;
 import lombok.NoArgsConstructor;
@@ -27,13 +27,13 @@ public class AccountAggregate extends AggregateRoot {
     public void depositFunds(BigDecimal funds) {
         //todo: further validation
         if (funds.compareTo(BigDecimal.ZERO) < 0 || !active) throw new IllegalStateException("Illegal state");
-        raiseEvent(FundsDepositedEvent.builder().id(this.aggregateId).amount(funds).build());
+        raiseEvent(AccountFundsDepositedEvent.builder().id(this.aggregateId).amount(funds).build());
     }
 
     public void withdrawFunds(BigDecimal funds) {
         //todo: further validation
         if (funds.compareTo(balance) > 0 || !active) throw new IllegalStateException("Illegal state");
-        raiseEvent(FundsWithdrawnEvent.builder().id(this.aggregateId).amount(funds).build());
+        raiseEvent(AccountFundsWithdrawnEvent.builder().id(this.aggregateId).amount(funds).build());
     }
 
     public void close() {
@@ -48,9 +48,9 @@ public class AccountAggregate extends AggregateRoot {
             this.balance = e.getOpeningBalance();
         } else if (event instanceof AccountClosedEvent e) {
             active = false;
-        } else if (event instanceof FundsDepositedEvent e) {
+        } else if (event instanceof AccountFundsDepositedEvent e) {
             balance = balance.add(e.getAmount());
-        } else if (event instanceof FundsWithdrawnEvent e) {
+        } else if (event instanceof AccountFundsWithdrawnEvent e) {
             balance = balance.subtract(e.getAmount());
         }
         this.version = Math.max(version, event.getVersion());

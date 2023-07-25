@@ -12,6 +12,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class FundsWithdrawnEvent extends BaseEvent {
+public class AccountFundsWithdrawnEvent extends BaseEvent {
     private BigDecimal amount;
 }
