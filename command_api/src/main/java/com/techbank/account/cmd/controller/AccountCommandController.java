@@ -16,10 +16,10 @@ import java.util.UUID;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(AccountController.API_URL)
+@RequestMapping(AccountCommandController.API_URL)
 @RequiredArgsConstructor
 @Slf4j
-public class AccountController {
+public class AccountCommandController {
     public static final String API_URL = "/api/v1/controller";
 
     private final AccountCommandHandlerService accountService;
