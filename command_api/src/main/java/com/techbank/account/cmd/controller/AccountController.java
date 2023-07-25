@@ -26,32 +26,28 @@ public class AccountController {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> create(@RequestBody OpenAccountCommand cmd) {
+    public void create(@RequestBody OpenAccountCommand cmd) {
         cmd.setId(UUID.randomUUID().toString());
         accountService.handle(cmd);
-        return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "/{id}/close", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> create(@RequestBody CloseAccountCommand cmd) {
+    public void create(@RequestBody CloseAccountCommand cmd) {
         accountService.handle(cmd);
-        return ResponseEntity.ok().build();
     }
 
 
     @PostMapping(path = "/{id}/withdraw", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> create(@RequestBody WithdrawFundsCommand cmd) {
+    public void create(@RequestBody WithdrawFundsCommand cmd) {
         accountService.handle(cmd);
-        return ResponseEntity.ok().build();
     }
 
     @PutMapping(path = "/{id}/deposit", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> create(@RequestBody DepositFundsCommand cmd) {
+    public void create(@RequestBody DepositFundsCommand cmd) {
         accountService.handle(cmd);
-        return ResponseEntity.ok().build();
     }
 
     @ExceptionHandler(IllegalStateException.class)
