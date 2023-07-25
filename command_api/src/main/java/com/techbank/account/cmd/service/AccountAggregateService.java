@@ -1,6 +1,7 @@
 package com.techbank.account.cmd.service;
 
 import com.techbank.account.cmd.aggregates.AccountAggregate;
+import com.techbank.account.cmd.repository.AccountAggregateRepository;
 import com.techbank.account.cmd.repository.EventStoreRepository;
 import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountFundsDepositedEvent;
@@ -13,10 +14,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AccountAggregateService {
     private final EventStoreRepository eventStoreRepository;
+    private final AccountAggregateRepository accountAggregateRepository;
 
     //todo: snapshot saver + optimistic lock
-    public void apply(AccountOpenedEvent event) {
+    public AccountAggregate apply(AccountOpenedEvent event) {
+        return accountAggregateRepository.save(toAggregate(event));
+    }
 
+    private static AccountAggregate toAggregate(AccountOpenedEvent event) {
+        return new AccountAggregate()
+                .setId(event.getId())
+                .setActive(true)
+                .setBalance(event.getOpeningBalance())
+                .setVersion(1);
     }
 
     public void apply(AccountFundsDepositedEvent event) {
@@ -32,6 +42,6 @@ public class AccountAggregateService {
     }
 
     public AccountAggregate getById(String id) {
-        return null;
+        return accountAggregateRepository.findById(id).orElse(null);
     }
 }

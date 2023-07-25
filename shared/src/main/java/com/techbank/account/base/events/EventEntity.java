@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collation = "eventStore")
+@Document(collation = "EventEntity")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

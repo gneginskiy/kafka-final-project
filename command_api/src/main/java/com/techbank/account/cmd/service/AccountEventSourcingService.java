@@ -13,7 +13,7 @@ public class AccountEventSourcingService implements EventSourcingService<Account
 
     @Override
     public void saveAggregate(AggregateRoot aggregateRoot) {
-        var aggregateId       = aggregateRoot.getAggregateId();
+        var aggregateId       = aggregateRoot.getId();
         var uncommitedChanges = aggregateRoot.getUncommitedChanges();
         var version           = aggregateRoot.getVersion();
         accountEventStoreService.saveEvents(aggregateId, uncommitedChanges, version);

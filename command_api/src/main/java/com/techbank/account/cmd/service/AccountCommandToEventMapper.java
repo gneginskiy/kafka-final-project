@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class AccountCommandToEventMapper {
 
     public AccountOpenedEvent getEvent(OpenAccountCommand cmd) {
         return new AccountOpenedEvent()
-                .setId(cmd.getId())
+                .setId(UUID.randomUUID().toString())
                 .setAccountHolder(cmd.getAccountHolder())
                 .setAccountType(cmd.getAccountType())
                 .setOpeningBalance(cmd.getOpeningBalance())

@@ -27,7 +27,6 @@ public class AccountCommandController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody OpenAccountCommand cmd) {
-        cmd.setId(UUID.randomUUID().toString());
         accountService.handle(cmd);
     }
 
