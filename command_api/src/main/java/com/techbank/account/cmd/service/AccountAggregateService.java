@@ -1,5 +1,6 @@
 package com.techbank.account.cmd.service;
 
+import com.techbank.account.cmd.aggregates.AccountAggregate;
 import com.techbank.account.cmd.repository.EventStoreRepository;
 import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountFundsDepositedEvent;
@@ -28,5 +29,9 @@ public class AccountAggregateService {
 
     public void apply(AccountClosedEvent event) {
 
+    }
+
+    public AccountAggregate getById(String id) {
+        return null;
     }
 }

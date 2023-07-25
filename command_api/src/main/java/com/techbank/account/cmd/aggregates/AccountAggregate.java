@@ -8,20 +8,18 @@ import com.techbank.account.dto.events.AccountFundsDepositedEvent;
 import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
 import com.techbank.account.base.aggregate.AggregateRoot;
 import com.techbank.account.base.events.BaseEvent;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
 
+@Data
 @NoArgsConstructor
 public class AccountAggregate extends AggregateRoot {
     private boolean active;
     private BigDecimal balance;
-
-    public AccountAggregate(OpenAccountCommand openCommand) {
-        raiseEvent(toEvent(openCommand));
-    }
 
     //why it's there.... todo.
     public void depositFunds(BigDecimal funds) {
