@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import static com.techbank.account.cmd.validation.AccountReflectUtil.readId;
+
 @Service
 @RequiredArgsConstructor
 public class AccountEventProducer implements EventProducer {
@@ -13,6 +15,6 @@ public class AccountEventProducer implements EventProducer {
 
     @Override
     public void produce(String topicName, BaseEvent event) {
-        kafkaTemplate.send(topicName, event);
+        kafkaTemplate.send(topicName, readId(event), event);
     }
 }

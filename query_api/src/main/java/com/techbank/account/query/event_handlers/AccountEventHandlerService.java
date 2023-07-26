@@ -24,7 +24,6 @@ public class AccountEventHandlerService {
         accountRepository.save(account);
     }
 
-
     public void handle(AccountFundsDepositedEvent evt) {
         var account = accountRepository.findById(evt.getId()).orElseThrow();
         account.setBalance(account.getBalance().add(evt.getAmount()));
