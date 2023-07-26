@@ -6,6 +6,7 @@ import com.techbank.account.query.dto.PaginatedList;
 import java.util.UUID;
 
 public class AccountQueryHandlerService {
+
     public AccountDto get(UUID id) {
         return null;
     }
