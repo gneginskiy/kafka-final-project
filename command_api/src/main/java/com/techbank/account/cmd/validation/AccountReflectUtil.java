@@ -13,6 +13,11 @@ public class AccountReflectUtil {
     }
 
     @SneakyThrows
+    public static <ID> ID readTimestamp(Object obj) {
+        return (ID) FieldUtils.readField(obj, "timestamp", true);
+    }
+
+    @SneakyThrows
     public static <ID> ID readAmount(Object obj) {
         return (ID) FieldUtils.readField(obj, "amount", true);
     }

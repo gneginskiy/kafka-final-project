@@ -40,7 +40,7 @@ public class AccountEventHandler {
         return new AccountEntity()
                 .setAccountHolder(evt.getAccountHolder())
                 .setAccountType(evt.getAccountType())
-                .setCreatedAt(evt.getCreatedAt())
+                .setCreatedAt(evt.getTimestamp())
                 .setActive(true)
                 .setBalance(evt.getOpeningBalance())
                 .setId(evt.getAccountHolder());

@@ -44,6 +44,6 @@ public class AccountCommandToEventMapper {
                 .setAccountHolder(cmd.getAccountHolder())
                 .setAccountType(cmd.getAccountType())
                 .setOpeningBalance(cmd.getOpeningBalance())
-                .setCreatedAt(Instant.now().toEpochMilli());
+                .setTimestamp(Instant.now().toEpochMilli());
     }
 }
