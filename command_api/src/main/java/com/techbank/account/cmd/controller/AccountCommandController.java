@@ -25,25 +25,29 @@ public class AccountCommandController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/open/",consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> create(@RequestBody OpenAccountCommand cmd) {
+    public ResponseEntity<?> create(@RequestBody OpenAccountCommand cmd, @PathVariable String id) {
+        cmd.setId(id);
         return ResponseEntity.ok(accountService.handle(cmd));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/{id}/close", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void create(@RequestBody CloseAccountCommand cmd) {
+    public void create(@RequestBody CloseAccountCommand cmd, @PathVariable String id) {
+        cmd.setId(id);
         accountService.handle(cmd);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/{id}/withdraw/", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void create(@RequestBody WithdrawFundsCommand cmd) {
+    public void create(@RequestBody WithdrawFundsCommand cmd, @PathVariable String id) {
+        cmd.setId(id);
         accountService.handle(cmd);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping(path = "/{id}/deposit", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void create(@RequestBody DepositFundsCommand cmd) {
+    @PostMapping(path = "/{id}/deposit", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public void create(@RequestBody DepositFundsCommand cmd, @PathVariable String id) {
+        cmd.setId(id);
         accountService.handle(cmd);
     }
 
