@@ -30,7 +30,6 @@ public class AccountAggregateService {
     public void apply(AccountFundsDepositedEvent event) {
         var aggregate = getById(event.getId());
         aggregate.setBalance(aggregate.getBalance().add(event.getAmount()));
-//        aggregate.setVersion(aggregate.getVersion() + 1);
         accountAggregateRepository.save(aggregate);
         eventsRepository.save(toEventEntity(event, aggregate));
     }
@@ -38,7 +37,6 @@ public class AccountAggregateService {
     public void apply(AccountFundsWithdrawnEvent event) {
         var aggregate = getById(event.getId());
         aggregate.setBalance(aggregate.getBalance().subtract(event.getAmount()));
-        aggregate.setVersion(aggregate.getVersion() + 1);
         accountAggregateRepository.save(aggregate);
         eventsRepository.save(toEventEntity(event, aggregate));
     }
@@ -46,7 +44,6 @@ public class AccountAggregateService {
     public void apply(AccountClosedEvent event) {
         var aggregate = getById(event.getId());
         aggregate.setActive(false);
-        aggregate.setVersion(aggregate.getVersion() + 1);
         accountAggregateRepository.save(aggregate);
         eventsRepository.save(toEventEntity(event, aggregate));
     }
