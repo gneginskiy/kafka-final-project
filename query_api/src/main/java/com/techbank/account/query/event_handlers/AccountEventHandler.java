@@ -1,5 +1,6 @@
 package com.techbank.account.query.event_handlers;
 
+import com.techbank.account.base.events.BaseEvent;
 import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountOpenedEvent;
 import com.techbank.account.dto.events.AccountFundsDepositedEvent;
@@ -44,5 +45,9 @@ public class AccountEventHandler {
                 .setActive(true)
                 .setBalance(evt.getOpeningBalance())
                 .setId(evt.getAccountHolder());
+    }
+
+    public void handle(BaseEvent baseEvent) {
+
     }
 }
