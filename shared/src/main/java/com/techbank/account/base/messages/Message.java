@@ -1,14 +1,14 @@
 package com.techbank.account.base.messages;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
+@Getter
+@Setter
+@Accessors(chain = true)
 public abstract class Message {
     private String id;
 }

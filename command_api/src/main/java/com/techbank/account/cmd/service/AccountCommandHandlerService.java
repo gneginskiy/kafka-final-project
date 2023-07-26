@@ -1,38 +1,47 @@
 package com.techbank.account.cmd.service;
 
-import com.techbank.account.base.service.EventSourcingService;
-import com.techbank.account.cmd.aggregates.AccountAggregate;
 import com.techbank.account.cmd.commands.CloseAccountCommand;
 import com.techbank.account.cmd.commands.DepositFundsCommand;
 import com.techbank.account.cmd.commands.OpenAccountCommand;
 import com.techbank.account.cmd.commands.WithdrawFundsCommand;
+import com.techbank.account.cmd.validation.AccountCommandValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AccountCommandHandlerService {
-    private final EventSourcingService<AccountAggregate> eventSourcingService;
+    private final AccountCommandValidator validator;
+    private final AccountCommandToEventMapper eventMapper;
+    private final AccountAggregateService aggregateService;
+    private final AccountEventSender eventSender;
 
-    public void handle(OpenAccountCommand cmd) {
-        eventSourcingService.saveAggregate(new AccountAggregate(cmd));
+    public String handle(OpenAccountCommand cmd) {
+        validator.validate(cmd);
+        var event = eventMapper.getEvent(cmd);
+        aggregateService.apply(event);
+        eventSender.send(event);
+        return event.getId();
     }
 
     public void handle(CloseAccountCommand cmd) {
-        var aggregate = eventSourcingService.getAggregateById(cmd.getId());
-        aggregate.close();
-        eventSourcingService.saveAggregate(aggregate);
+        validator.validate(cmd);
+        var event = eventMapper.getEvent(cmd);
+        aggregateService.apply(event);
+        eventSender.send(event);
     }
 
     public void handle(WithdrawFundsCommand cmd) {
-        var aggregate = eventSourcingService.getAggregateById(cmd.getId());
-        aggregate.withdrawFunds(cmd.getAmount());
-        eventSourcingService.saveAggregate(aggregate);
+        validator.validate(cmd);
+        var event = eventMapper.getEvent(cmd);
+        aggregateService.apply(event);
+        eventSender.send(event);
     }
 
     public void handle(DepositFundsCommand cmd) {
-        var aggregate = eventSourcingService.getAggregateById(cmd.getId());
-        aggregate.depositFunds(cmd.getAmount());
-        eventSourcingService.saveAggregate(aggregate);
+        validator.validate(cmd);
+        var event = eventMapper.getEvent(cmd);
+        aggregateService.apply(event);
+        eventSender.send(event);
     }
 }

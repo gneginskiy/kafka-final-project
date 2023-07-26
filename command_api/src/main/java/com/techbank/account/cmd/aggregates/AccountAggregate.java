@@ -1,69 +1,25 @@
 package com.techbank.account.cmd.aggregates;
 
 
-import com.techbank.account.cmd.commands.OpenAccountCommand;
-import com.techbank.account.dto.events.AccountClosedEvent;
-import com.techbank.account.dto.events.AccountOpenedEvent;
-import com.techbank.account.dto.events.FundsDepositedEvent;
-import com.techbank.account.dto.events.FundsWithdrawnEvent;
-import com.techbank.account.base.aggregate.AggregateRoot;
-import com.techbank.account.base.events.BaseEvent;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
-
+@Document("account_aggregate")
+@Getter
+@Setter
+@Accessors(chain = true)
 @NoArgsConstructor
-public class AccountAggregate extends AggregateRoot {
+@AllArgsConstructor
+public class AccountAggregate {
+    @Id
+    private String id;
     private boolean active;
     private BigDecimal balance;
-
-    public AccountAggregate(OpenAccountCommand openCommand) {
-        raiseEvent(toEvent(openCommand));
-    }
-
-    //why it's there.... todo.
-    public void depositFunds(BigDecimal funds) {
-        //todo: further validation
-        if (funds.compareTo(BigDecimal.ZERO) < 0 || !active) throw new IllegalStateException("Illegal state");
-        raiseEvent(FundsDepositedEvent.builder().id(this.aggregateId).amount(funds).build());
-    }
-
-    public void withdrawFunds(BigDecimal funds) {
-        //todo: further validation
-        if (funds.compareTo(balance) > 0 || !active) throw new IllegalStateException("Illegal state");
-        raiseEvent(FundsWithdrawnEvent.builder().id(this.aggregateId).amount(funds).build());
-    }
-
-    public void close() {
-        raiseEvent(AccountClosedEvent.builder().id(this.aggregateId).build());
-    }
-
-
-    @Override
-    public void apply(BaseEvent event) {
-        if (event instanceof AccountOpenedEvent e) {
-            active = true;
-            this.balance = e.getOpeningBalance();
-        } else if (event instanceof AccountClosedEvent e) {
-            active = false;
-        } else if (event instanceof FundsDepositedEvent e) {
-            balance = balance.add(e.getAmount());
-        } else if (event instanceof FundsWithdrawnEvent e) {
-            balance = balance.subtract(e.getAmount());
-        }
-        this.version = Math.max(version, event.getVersion());
-    }
-
-    //extract to a separate converter
-    private static AccountOpenedEvent toEvent(OpenAccountCommand c) {
-        return AccountOpenedEvent.builder()
-                .id(c.getId())
-                .accountHolder(c.getAccountHolder())
-                .accountType(c.getAccountType())
-                .openingBalance(c.getOpeningBalance())
-                .createdAt(Instant.now().toEpochMilli())
-                .build();
-    }
+    @Version
+    private int version;
 }
