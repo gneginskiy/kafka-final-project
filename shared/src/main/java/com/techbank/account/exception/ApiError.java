@@ -1,4 +1,4 @@
-package com.techbank.account.cmd.exceptions;
+package com.techbank.account.exception;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

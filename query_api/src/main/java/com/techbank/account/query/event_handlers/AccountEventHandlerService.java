@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class AccountEventHandler {
+public class AccountEventHandlerService {
     private final AccountRepository accountRepository;
 
     public void handle(AccountOpenedEvent evt) {
