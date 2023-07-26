@@ -22,20 +22,20 @@ public class AccountCommandToEventMapper {
                 .setId(cmd.getId())
                 .setAmount(cmd.getAmount())
                 .setAmount(cmd.getAmount())
-                .setCreatedAt(Instant.now().toEpochMilli());
+                .setTimestamp(Instant.now().toEpochMilli());
     }
 
     public AccountFundsWithdrawnEvent getEvent(WithdrawFundsCommand cmd) {
         return new AccountFundsWithdrawnEvent()
                 .setId(cmd.getId())
                 .setAmount(cmd.getAmount())
-                .setCreatedAt(Instant.now().toEpochMilli());
+                .setTimestamp(Instant.now().toEpochMilli());
     }
 
     public AccountClosedEvent getEvent(CloseAccountCommand cmd) {
         return new AccountClosedEvent()
                 .setId(cmd.getId())
-                .setCreatedAt(Instant.now().toEpochMilli());
+                .setTimestamp(Instant.now().toEpochMilli());
     }
 
     public AccountOpenedEvent getEvent(OpenAccountCommand cmd) {

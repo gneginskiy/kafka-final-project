@@ -21,13 +21,12 @@ public class AccountValidationAssertions {
     static void checkIdPresent(BaseCommand cmd) {
         checkFieldNotEmpty(readId(cmd), cmd, "id");
     }
+    static void checkIdNotPresent(BaseCommand cmd) {
+        checkFieldEmpty(readId(cmd), cmd, "id");
+    }
 
     static void checkAccountPresent(BaseCommand cmd, AccountAggregate aggregate) {
         checkTrue(aggregate != null, cmd, "Account is not present");
-    }
-
-    static void checkAccountIsNotPresent(BaseCommand cmd, AccountAggregate aggregate) {
-        checkTrue(aggregate == null, cmd, "Account is already present");
     }
 
     static void checkWithdrawalAllowed(AccountAggregate aggregate, WithdrawFundsCommand cmd) {

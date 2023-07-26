@@ -19,12 +19,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @Slf4j
 public class AccountCommandController {
-    public static final String API_URL = "/api/v1/controller";
+    public static final String API_URL = "/api/v1/controller/";
 
     private final AccountCommandHandlerService accountService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/open/",consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> create(@RequestBody OpenAccountCommand cmd) {
         return ResponseEntity.ok(accountService.handle(cmd));
     }
@@ -35,9 +35,8 @@ public class AccountCommandController {
         accountService.handle(cmd);
     }
 
-
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path = "/{id}/withdraw", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/{id}/withdraw/", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public void create(@RequestBody WithdrawFundsCommand cmd) {
         accountService.handle(cmd);
     }

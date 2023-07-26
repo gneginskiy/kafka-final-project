@@ -45,7 +45,6 @@ public class AccountCommandValidator {
     }
 
     public void validate(OpenAccountCommand cmd) {
-        var aggregate = aggregateService.getById(cmd.getId());
-        checkAccountIsNotPresent(cmd,aggregate);
+        checkIdNotPresent(cmd);
     }
 }

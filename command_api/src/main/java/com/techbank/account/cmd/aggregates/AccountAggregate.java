@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
-@Document(collation = "AccountAggregate")
+@Document("account_aggregate")
 @Getter
 @Setter
 @Accessors(chain = true)

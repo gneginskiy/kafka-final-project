@@ -30,7 +30,7 @@ public class AccountAggregateService {
     public void apply(AccountFundsDepositedEvent event) {
         var aggregate = getById(event.getId());
         aggregate.setBalance(aggregate.getBalance().add(event.getAmount()));
-        aggregate.setVersion(aggregate.getVersion() + 1);
+//        aggregate.setVersion(aggregate.getVersion() + 1);
         accountAggregateRepository.save(aggregate);
         eventsRepository.save(toEventEntity(event, aggregate));
     }
@@ -60,7 +60,7 @@ public class AccountAggregateService {
                 .setId(event.getId())
                 .setActive(true)
                 .setBalance(event.getOpeningBalance())
-                .setVersion(1);
+                .setVersion(0);
     }
 
     private static EventEntity toEventEntity(BaseEvent event, AccountAggregate aggregate) {

@@ -1,6 +1,7 @@
 package com.techbank.account.cmd.validation;
 
 import com.techbank.account.cmd.exceptions.ApiError;
+import org.apache.kafka.common.protocol.types.Field;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -15,6 +16,12 @@ public class ValidationAssertions {
         if (value == null || "".equals(value))
             throw ApiError.badRequest(enclosing.getClass(), readId(enclosing),
                     fieldname + " should not be empty");
+    }
+
+    public static void checkFieldEmpty(Object value, Object enclosing, String fieldname) {
+        if (value != null || value instanceof String s && s.length()>0)
+            throw ApiError.badRequest(enclosing.getClass(), readId(enclosing),
+                    fieldname + " should be empty");
     }
 
     //greater or equal to zero
