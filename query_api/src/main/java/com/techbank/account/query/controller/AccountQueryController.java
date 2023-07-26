@@ -4,6 +4,7 @@ import com.techbank.account.exception.ApiError;
 import com.techbank.account.query.dto.AccountDto;
 import com.techbank.account.query.dto.PaginatedList;
 import com.techbank.account.query.entity.AccountEntity;
+import com.techbank.account.query.repository.util.getall.criteria.SearchCriteria;
 import com.techbank.account.query.service.AccountQueryHandlerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ public class AccountQueryController {
     private final AccountQueryHandlerService accountService;
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public PaginatedList<AccountDto> getAll(AccountSearchCriteria searchCriteria) {
+    public PaginatedList<AccountDto> getAll(SearchCriteria searchCriteria) {
         return accountService.getAll(GetAllRqDetails.of(AccountEntity.class, searchCriteria));
     }
 
