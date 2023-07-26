@@ -3,7 +3,6 @@ package com.techbank.account.query.repository.util.getall.helpers;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.techbank.account.query.repository.util.getall.criteria.OrderSearchCriteria;
 import com.techbank.account.query.repository.util.getall.criteria.SearchCriteria;
 import com.techbank.account.query.util.Futility;
 import com.techbank.account.query.util.ReflectHelper;
