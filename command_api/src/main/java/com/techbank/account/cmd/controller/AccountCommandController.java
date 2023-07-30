@@ -1,11 +1,13 @@
 package com.techbank.account.cmd.controller;
 
+import com.techbank.account.base.messages.Message;
 import com.techbank.account.cmd.commands.CloseAccountCommand;
 import com.techbank.account.cmd.commands.DepositFundsCommand;
 import com.techbank.account.cmd.commands.OpenAccountCommand;
 import com.techbank.account.cmd.commands.WithdrawFundsCommand;
 import com.techbank.account.cmd.exceptions.ApiError;
 import com.techbank.account.cmd.service.AccountCommandHandlerService;
+import com.techbank.account.dto.events.AccountClosedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +34,8 @@ public class AccountCommandController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/{id}/close", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void closeAccount(@RequestBody CloseAccountCommand cmd, @PathVariable("id") String id) {
-        cmd.setId(id);
-        accountService.handle(cmd);
+    public void closeAccount(@PathVariable("id") String id) {
+        accountService.handle(new CloseAccountCommand(id));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
