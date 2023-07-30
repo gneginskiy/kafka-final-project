@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -27,26 +29,27 @@ public class AccountCommandController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/open", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> openAccount(@RequestBody OpenAccountCommand cmd) {
+        cmd.setAggregateId(UUID.randomUUID());
         return ResponseEntity.ok(accountService.handle(cmd));
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/{id}/close", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void closeAccount(@PathVariable("id") String id) {
+    public void closeAccount(@PathVariable("id") UUID id) {
         accountService.handle(new CloseAccountCommand(id));
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/{id}/withdraw", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void withdraw(@RequestBody WithdrawFundsCommand cmd, @PathVariable("id") String id) {
-        cmd.setId(id);
+    public void withdraw(@RequestBody WithdrawFundsCommand cmd, @PathVariable("id") UUID id) {
+        cmd.setAggregateId(id);
         accountService.handle(cmd);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/{id}/deposit", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void deposit(@RequestBody DepositFundsCommand cmd, @PathVariable("id") String id) {
-        cmd.setId(id);
+    public void deposit(@RequestBody DepositFundsCommand cmd, @PathVariable("id") UUID id) {
+        cmd.setAggregateId(id);
         accountService.handle(cmd);
     }
 
@@ -55,5 +58,4 @@ public class AccountCommandController {
         log.error(e.getMessage(), e);
         return ResponseEntity.badRequest().body(new ErrorBody(e.getMessage()));
     }
-
 }

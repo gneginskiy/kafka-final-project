@@ -1,16 +1,14 @@
 package com.techbank.account.base.command;
 
-import com.techbank.account.base.messages.Message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
-public class BaseCommand extends Message {
-    public BaseCommand(String id) {
-        super(id);
-    }
+@NoArgsConstructor
+public class BaseCommand{
+    private UUID aggregateId;
 }

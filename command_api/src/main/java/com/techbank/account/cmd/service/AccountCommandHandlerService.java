@@ -8,6 +8,8 @@ import com.techbank.account.cmd.validation.AccountCommandValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AccountCommandHandlerService {
@@ -16,12 +18,12 @@ public class AccountCommandHandlerService {
     private final AccountAggregateService aggregateService;
     private final AccountEventSender eventSender;
 
-    public String handle(OpenAccountCommand cmd) {
+    public UUID handle(OpenAccountCommand cmd) {
         validator.validate(cmd);
         var event = eventMapper.buildEvent(cmd);
         aggregateService.apply(event);
         eventSender.send(event);
-        return event.getId();
+        return event.getAggregateId();
     }
 
     public void handle(CloseAccountCommand cmd) {

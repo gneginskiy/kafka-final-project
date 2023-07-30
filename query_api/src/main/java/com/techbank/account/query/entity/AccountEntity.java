@@ -11,6 +11,7 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -20,7 +21,7 @@ import java.math.BigDecimal;
 @Accessors(chain = true)
 public class AccountEntity {
     @Id
-    private String id;
+    private UUID id;
     private String accountHolder;
     private Long createdAt;
     private AccountType accountType;

@@ -12,6 +12,8 @@ import com.techbank.account.dto.events.AccountOpenedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 import static com.techbank.account.cmd.validation.AccountReflectUtil.readId;
 import static com.techbank.account.cmd.validation.AccountReflectUtil.readTimestamp;
 
@@ -47,13 +49,13 @@ public class AccountAggregateService {
         eventsRepository.save(toEventEntity(event, aggregate));
     }
 
-    public AccountAggregate getById(String id) {
+    public AccountAggregate getById(UUID id) {
         return accountAggregateRepository.findById(id).orElse(null);
     }
 
     private static AccountAggregate buildNewAggregate(AccountOpenedEvent event) {
         return new AccountAggregate()
-                .setId(event.getId())
+                .setId(event.getAggregateId())
                 .setActive(true)
                 .setBalance(event.getOpeningBalance())
                 .setVersion(0);
@@ -61,7 +63,7 @@ public class AccountAggregateService {
 
     private static EventEntity toEventEntity(BaseEvent event, AccountAggregate aggregate) {
         return new EventEntity()
-                .setAggregateId(readId(aggregate))
+                .setAggregateId(aggregate.getId())
                 .setAggregateType(aggregate.getClass().getSimpleName())
                 .setEventType(event.getClass().getSimpleName())
                 .setEventData(event)

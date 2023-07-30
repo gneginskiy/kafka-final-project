@@ -4,6 +4,8 @@ import com.techbank.account.query.entity.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-public interface AccountRepository extends JpaRepository<AccountEntity, String>,
+import java.util.UUID;
+
+public interface AccountRepository extends JpaRepository<AccountEntity, UUID>,
                                            QuerydslPredicateExecutor<AccountEntity> {
 }

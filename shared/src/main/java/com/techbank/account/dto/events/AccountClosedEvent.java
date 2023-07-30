@@ -10,8 +10,5 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AccountClosedEvent implements BaseEvent {
-    private String id;
-    private int version;
-    private Long timestamp;
+public class AccountClosedEvent extends BaseEvent {
 }

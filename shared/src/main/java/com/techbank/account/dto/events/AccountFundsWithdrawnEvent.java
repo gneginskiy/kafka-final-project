@@ -6,16 +6,15 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AccountFundsWithdrawnEvent implements BaseEvent {
-    private String id;
+public class AccountFundsWithdrawnEvent extends BaseEvent {
     private int version;
     private Long timestamp;
-
     private BigDecimal amount;
 }

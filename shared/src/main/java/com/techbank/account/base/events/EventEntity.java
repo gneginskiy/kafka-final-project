@@ -6,6 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.UUID;
+
 @Document("event_entity")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +18,7 @@ public class EventEntity {
     @Id
     private String id;
     @Indexed(unique = false)
-    private String aggregateId;
+    private UUID aggregateId;
     private Long timestamp;
     private String aggregateType;
     private String eventType;

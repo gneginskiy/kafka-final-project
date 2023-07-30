@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Document("account_aggregate")
 @Getter
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class AccountAggregate {
     @Id
-    private String id;
+    private UUID id;
     private boolean active;
     private BigDecimal balance;
     @Version

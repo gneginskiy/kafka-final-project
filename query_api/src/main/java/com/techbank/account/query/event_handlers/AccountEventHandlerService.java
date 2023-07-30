@@ -5,13 +5,11 @@ import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountOpenedEvent;
 import com.techbank.account.dto.events.AccountFundsDepositedEvent;
 import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
-import com.techbank.account.exception.ApiError;
 import com.techbank.account.query.entity.AccountEntity;
 import com.techbank.account.query.repository.AccountRepository;
 import com.techbank.account.query.converter.UnifiedMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.reflect.MethodUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -61,7 +59,7 @@ public class AccountEventHandlerService {
                 .setCreatedAt(evt.getTimestamp())
                 .setActive(true)
                 .setBalance(evt.getOpeningBalance())
-                .setId(evt.getId());
+                .setId(evt.getAggregateId());
     }
 
 }
