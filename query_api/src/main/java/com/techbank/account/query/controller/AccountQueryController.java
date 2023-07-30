@@ -1,6 +1,7 @@
 package com.techbank.account.query.controller;
 
 import com.techbank.account.exception.ApiError;
+import com.techbank.account.exception.ErrorBody;
 import com.techbank.account.query.dto.AccountDto;
 import com.techbank.account.query.dto.PaginatedList;
 import com.techbank.account.query.entity.AccountEntity;
@@ -37,6 +38,6 @@ public class AccountQueryController {
     @ExceptionHandler(ApiError.class)
     protected ResponseEntity<?> handle(Exception e) {
         log.error(e.getMessage(), e);
-        return ResponseEntity.badRequest().body(e);
+        return ResponseEntity.badRequest().body(new ErrorBody(e.getMessage()));
     }
 }
