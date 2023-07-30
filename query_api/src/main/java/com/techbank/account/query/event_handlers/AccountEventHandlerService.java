@@ -26,26 +26,36 @@ public class AccountEventHandlerService {
     private final AccountRepository accountRepository;
     private final UnifiedMapper mapper;
 
-    public void handle(AccountOpenedEvent evt) {
+    public void handle(BaseEvent evt) {
+        try {
+            MethodUtils.invokeMethod(this, "handle", evt);
+        } catch (Exception e) {
+            var apiError = ApiError.internalServerError("Can't handle event", e);
+            log.error(apiError.getMessage(), apiError);
+            throw apiError;
+        }
+    }
+
+    private void handle(AccountOpenedEvent evt) {
         AccountEntity entity = toEntity(evt);
         mapper.setFtsIndexValue(entity);
         accountRepository.save(entity);
     }
 
-    public void handle(AccountClosedEvent evt) {
+    private void handle(AccountClosedEvent evt) {
         var entity = accountRepository.findById(evt.getId()).orElseThrow().setActive(false);
         mapper.setFtsIndexValue(entity);
         accountRepository.save(entity);
     }
 
-    public void handle(AccountFundsDepositedEvent evt) {
+    private void handle(AccountFundsDepositedEvent evt) {
         var entity = accountRepository.findById(evt.getId()).orElseThrow();
         entity.setBalance(entity.getBalance().add(evt.getAmount()));
         mapper.setFtsIndexValue(entity);
         accountRepository.save(entity);
     }
 
-    public void handle(AccountFundsWithdrawnEvent evt) {
+    private void handle(AccountFundsWithdrawnEvent evt) {
         var entity = accountRepository.findById(evt.getId()).orElseThrow();
         entity.setBalance(entity.getBalance().subtract(evt.getAmount()));
         mapper.setFtsIndexValue(entity);
@@ -62,14 +72,4 @@ public class AccountEventHandlerService {
                 .setId(evt.getAccountHolder());
     }
 
-    public void handle(BaseEvent evt) {
-        try {
-            MethodUtils.invokeMethod(this, "handle", evt);
-        } catch (Exception e) {
-            String msg = "Can't handle event";
-            var apiError = ApiError.internalServerError(msg, e);
-            log.error(msg, apiError);
-            throw apiError;
-        }
-    }
 }
