@@ -1,15 +1,13 @@
 package com.techbank.account.cmd.controller;
 
-import com.techbank.account.base.messages.Message;
 import com.techbank.account.cmd.commands.CloseAccountCommand;
 import com.techbank.account.cmd.commands.DepositFundsCommand;
 import com.techbank.account.cmd.commands.OpenAccountCommand;
 import com.techbank.account.cmd.commands.WithdrawFundsCommand;
 import com.techbank.account.cmd.exceptions.ApiError;
 import com.techbank.account.cmd.service.AccountCommandHandlerService;
-import com.techbank.account.dto.events.AccountClosedEvent;
+import com.techbank.account.exception.ErrorBody;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,8 +56,4 @@ public class AccountCommandController {
         return ResponseEntity.badRequest().body(new ErrorBody(e.getMessage()));
     }
 
-    @Value
-    static class ErrorBody {
-        String error;
-    }
 }
