@@ -5,8 +5,9 @@ import com.techbank.account.query.controller.GetAllRqDetails;
 import com.techbank.account.query.dto.AccountDto;
 import com.techbank.account.query.dto.PaginatedList;
 import com.techbank.account.query.repository.AccountRepository;
+import com.techbank.account.query.util.Futility;
 import com.techbank.account.query.validation.AccountQueryValidator;
-import converter.UnifiedMapper;
+import com.techbank.account.query.converter.UnifiedMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,8 @@ public class AccountQueryHandlerService {
     private final UnifiedMapper mapper;
 
     public AccountDto get(UUID id) {
-        validator.validateGet(id);
         return accountRepository.findById(id.toString())
-                .map(mapper::toDto)
+                .map(a->Futility.deepClone(a,AccountDto.class))
                 .orElseThrow(() -> ApiError.notFound(AccountDto.class, id, null));
     }
 

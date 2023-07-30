@@ -1,6 +1,5 @@
 package com.techbank.account.query.event_handlers;
 
-import com.querydsl.core.util.ReflectionUtils;
 import com.techbank.account.base.events.BaseEvent;
 import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountOpenedEvent;
@@ -9,15 +8,11 @@ import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
 import com.techbank.account.exception.ApiError;
 import com.techbank.account.query.entity.AccountEntity;
 import com.techbank.account.query.repository.AccountRepository;
-import converter.UnifiedMapper;
+import com.techbank.account.query.converter.UnifiedMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
-import org.apache.el.util.ReflectionUtil;
 import org.springframework.stereotype.Component;
-
-import java.lang.reflect.InvocationTargetException;
 
 @Component
 @RequiredArgsConstructor
@@ -27,13 +22,10 @@ public class AccountEventHandlerService {
     private final UnifiedMapper mapper;
 
     public void handle(BaseEvent evt) {
-        try {
-            MethodUtils.invokeMethod(this, "handle", evt);
-        } catch (Exception e) {
-            var apiError = ApiError.internalServerError("Can't handle event", e);
-            log.error(apiError.getMessage(), apiError);
-            throw apiError;
-        }
+        if (evt instanceof AccountOpenedEvent         e) handle(e);
+        if (evt instanceof AccountFundsDepositedEvent e) handle(e);
+        if (evt instanceof AccountFundsWithdrawnEvent e) handle(e);
+        if (evt instanceof AccountClosedEvent         e) handle(e);
     }
 
     private void handle(AccountOpenedEvent evt) {

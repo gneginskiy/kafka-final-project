@@ -5,4 +5,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'account.cmd'
+rootProject.name = 'account.command_api'

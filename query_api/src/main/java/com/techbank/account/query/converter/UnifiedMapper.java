@@ -1,4 +1,4 @@
-package converter;
+package com.techbank.account.query.converter;
 
 import com.techbank.account.query.dto.AccountDto;
 import com.techbank.account.query.entity.AccountEntity;

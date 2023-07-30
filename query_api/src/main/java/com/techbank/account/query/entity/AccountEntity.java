@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Accessors(chain = true)
-@Slf4j
 public class AccountEntity {
     @Id
     private String id;
@@ -27,4 +26,6 @@ public class AccountEntity {
     private AccountType accountType;
     private BigDecimal balance;
     private boolean active;
+
+    private String ft;
 }
