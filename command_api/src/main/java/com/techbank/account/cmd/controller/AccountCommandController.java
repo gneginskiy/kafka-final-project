@@ -20,30 +20,30 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @Slf4j
 public class AccountCommandController {
-    public static final String API_URL = "/api/v1/";
+    public static final String API_URL = "/api/v1/account/";
 
     private final AccountCommandHandlerService accountService;
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/open", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> openAccount(@RequestBody OpenAccountCommand cmd) {
         return ResponseEntity.ok(accountService.handle(cmd));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/{id}/close", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public void closeAccount(@PathVariable("id") String id) {
         accountService.handle(new CloseAccountCommand(id));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/{id}/withdraw", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public void withdraw(@RequestBody WithdrawFundsCommand cmd, @PathVariable("id") String id) {
         cmd.setId(id);
         accountService.handle(cmd);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/{id}/deposit", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public void deposit(@RequestBody DepositFundsCommand cmd, @PathVariable("id") String id) {
         cmd.setId(id);

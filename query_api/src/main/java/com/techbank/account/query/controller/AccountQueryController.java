@@ -21,7 +21,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @Slf4j
 public class AccountQueryController {
-    public static final String API_URL = "/api/v1/";
+    public static final String API_URL = "/api/v1/account";
 
     private final AccountQueryHandlerService accountService;
 
