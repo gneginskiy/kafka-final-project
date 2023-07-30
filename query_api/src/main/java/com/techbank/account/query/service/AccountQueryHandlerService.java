@@ -16,7 +16,6 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AccountQueryHandlerService {
-    private final AccountQueryValidator validator;
     private final AccountRepository accountRepository;
     private final UnifiedMapper mapper;
 
