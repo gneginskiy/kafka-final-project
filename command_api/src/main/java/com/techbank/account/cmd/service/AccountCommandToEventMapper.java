@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AccountCommandToEventMapper {
-    public AccountFundsDepositedEvent getEvent(DepositFundsCommand cmd) {
+    public AccountFundsDepositedEvent buildEvent(DepositFundsCommand cmd) {
         return new AccountFundsDepositedEvent()
                 .setId(cmd.getId())
                 .setAmount(cmd.getAmount())
@@ -25,20 +25,20 @@ public class AccountCommandToEventMapper {
                 .setTimestamp(Instant.now().toEpochMilli());
     }
 
-    public AccountFundsWithdrawnEvent getEvent(WithdrawFundsCommand cmd) {
+    public AccountFundsWithdrawnEvent buildEvent(WithdrawFundsCommand cmd) {
         return new AccountFundsWithdrawnEvent()
                 .setId(cmd.getId())
                 .setAmount(cmd.getAmount())
                 .setTimestamp(Instant.now().toEpochMilli());
     }
 
-    public AccountClosedEvent getEvent(CloseAccountCommand cmd) {
+    public AccountClosedEvent buildEvent(CloseAccountCommand cmd) {
         return new AccountClosedEvent()
                 .setId(cmd.getId())
                 .setTimestamp(Instant.now().toEpochMilli());
     }
 
-    public AccountOpenedEvent getEvent(OpenAccountCommand cmd) {
+    public AccountOpenedEvent buildEvent(OpenAccountCommand cmd) {
         return new AccountOpenedEvent()
                 .setId(UUID.randomUUID().toString())
                 .setAccountHolder(cmd.getAccountHolder())

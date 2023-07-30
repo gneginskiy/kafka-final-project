@@ -18,7 +18,7 @@ public class AccountCommandHandlerService {
 
     public String handle(OpenAccountCommand cmd) {
         validator.validate(cmd);
-        var event = eventMapper.getEvent(cmd);
+        var event = eventMapper.buildEvent(cmd);
         aggregateService.apply(event);
         eventSender.send(event);
         return event.getId();
@@ -26,21 +26,21 @@ public class AccountCommandHandlerService {
 
     public void handle(CloseAccountCommand cmd) {
         validator.validate(cmd);
-        var event = eventMapper.getEvent(cmd);
+        var event = eventMapper.buildEvent(cmd);
         aggregateService.apply(event);
         eventSender.send(event);
     }
 
     public void handle(WithdrawFundsCommand cmd) {
         validator.validate(cmd);
-        var event = eventMapper.getEvent(cmd);
+        var event = eventMapper.buildEvent(cmd);
         aggregateService.apply(event);
         eventSender.send(event);
     }
 
     public void handle(DepositFundsCommand cmd) {
         validator.validate(cmd);
-        var event = eventMapper.getEvent(cmd);
+        var event = eventMapper.buildEvent(cmd);
         aggregateService.apply(event);
         eventSender.send(event);
     }
