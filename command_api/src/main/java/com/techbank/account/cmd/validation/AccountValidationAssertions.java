@@ -31,7 +31,7 @@ public class AccountValidationAssertions {
 
     static void checkWithdrawalAllowed(AccountAggregate aggregate, WithdrawFundsCommand cmd) {
         boolean accountIsSufficient = aggregate.getBalance().compareTo(cmd.getAmount()) > 0;
-        String msg = "Account balance is " + aggregate.getBalance() + " whereas you're trying to withdraw" + cmd.getAmount();
+        String msg = "Account balance is " + aggregate.getBalance() + " whereas you're trying to withdraw: " + cmd.getAmount();
         checkTrue(accountIsSufficient, aggregate, msg);
     }
 }

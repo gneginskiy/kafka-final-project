@@ -7,6 +7,7 @@ import com.techbank.account.cmd.commands.WithdrawFundsCommand;
 import com.techbank.account.cmd.exceptions.ApiError;
 import com.techbank.account.cmd.service.AccountCommandHandlerService;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class AccountCommandController {
     private final AccountCommandHandlerService accountService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(path = "/open",consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/open", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> openAccount(@RequestBody OpenAccountCommand cmd) {
         return ResponseEntity.ok(accountService.handle(cmd));
     }
@@ -53,6 +54,11 @@ public class AccountCommandController {
     @ExceptionHandler(ApiError.class)
     protected ResponseEntity<?> handle(Exception e) {
         log.error(e.getMessage(), e);
-        return ResponseEntity.badRequest().body(e);
+        return ResponseEntity.badRequest().body(new ErrorBody(e.getMessage()));
+    }
+
+    @Value
+    static class ErrorBody {
+        String error;
     }
 }
