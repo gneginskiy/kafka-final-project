@@ -1,5 +1,6 @@
 package com.techbank.account.query.service;
 
+import com.techbank.account.exception.ApiError;
 import com.techbank.account.query.controller.GetAllRqDetails;
 import com.techbank.account.query.dto.AccountDto;
 import com.techbank.account.query.dto.PaginatedList;
@@ -22,8 +23,9 @@ public class AccountQueryHandlerService {
 
     public AccountDto get(UUID id) {
         validator.validateGet(id);
-        accountRepository.findById(id.toString());
-        return null;
+        return accountRepository.findById(id.toString())
+                .map(mapper::toDto)
+                .orElseThrow(() -> ApiError.notFound(AccountDto.class, id, null));
     }
 
     public PaginatedList<AccountDto> getAll(GetAllRqDetails rq) {
