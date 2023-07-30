@@ -61,7 +61,7 @@ public class AccountEventHandlerService {
                 .setCreatedAt(evt.getTimestamp())
                 .setActive(true)
                 .setBalance(evt.getOpeningBalance())
-                .setId(evt.getAccountHolder());
+                .setId(evt.getId());
     }
 
 }
