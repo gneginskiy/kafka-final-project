@@ -2,7 +2,6 @@ package com.techbank.account.base.messages;
 
 import lombok.*;
 import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor

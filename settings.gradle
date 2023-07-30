@@ -1,5 +1,4 @@
-rootProject.name = 'otus-kafka-final-project'
+rootProject.name = 'account'
 include 'command_api'
 include 'query_api'
 include 'shared'
-

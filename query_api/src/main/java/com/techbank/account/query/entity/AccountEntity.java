@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
@@ -19,7 +18,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Accessors(chain = true)
-@Slf4j
 public class AccountEntity {
     @Id
     private String id;
@@ -28,4 +26,6 @@ public class AccountEntity {
     private AccountType accountType;
     private BigDecimal balance;
     private boolean active;
+
+    private String ft;
 }

@@ -5,36 +5,53 @@ import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountOpenedEvent;
 import com.techbank.account.dto.events.AccountFundsDepositedEvent;
 import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
+import com.techbank.account.exception.ApiError;
 import com.techbank.account.query.entity.AccountEntity;
 import com.techbank.account.query.repository.AccountRepository;
+import com.techbank.account.query.converter.UnifiedMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AccountEventHandlerService {
     private final AccountRepository accountRepository;
+    private final UnifiedMapper mapper;
 
-    public void handle(AccountOpenedEvent evt) {
-        accountRepository.save(toEntity(evt));
+    public void handle(BaseEvent evt) {
+        if (evt instanceof AccountOpenedEvent         e) handle(e);
+        if (evt instanceof AccountFundsDepositedEvent e) handle(e);
+        if (evt instanceof AccountFundsWithdrawnEvent e) handle(e);
+        if (evt instanceof AccountClosedEvent         e) handle(e);
     }
 
-    public void handle(AccountClosedEvent evt) {
-        var account = accountRepository.findById(evt.getId()).orElseThrow().setActive(false);
-        accountRepository.save(account);
+    private void handle(AccountOpenedEvent evt) {
+        AccountEntity entity = toEntity(evt);
+        mapper.setFtsIndexValue(entity);
+        accountRepository.save(entity);
     }
 
-
-    public void handle(AccountFundsDepositedEvent evt) {
-        var account = accountRepository.findById(evt.getId()).orElseThrow();
-        account.setBalance(account.getBalance().add(evt.getAmount()));
-        accountRepository.save(account);
+    private void handle(AccountClosedEvent evt) {
+        var entity = accountRepository.findById(evt.getId()).orElseThrow().setActive(false);
+        mapper.setFtsIndexValue(entity);
+        accountRepository.save(entity);
     }
 
-    public void handle(AccountFundsWithdrawnEvent evt) {
-        var account = accountRepository.findById(evt.getId()).orElseThrow();
-        account.setBalance(account.getBalance().subtract(evt.getAmount()));
-        accountRepository.save(account);
+    private void handle(AccountFundsDepositedEvent evt) {
+        var entity = accountRepository.findById(evt.getId()).orElseThrow();
+        entity.setBalance(entity.getBalance().add(evt.getAmount()));
+        mapper.setFtsIndexValue(entity);
+        accountRepository.save(entity);
+    }
+
+    private void handle(AccountFundsWithdrawnEvent evt) {
+        var entity = accountRepository.findById(evt.getId()).orElseThrow();
+        entity.setBalance(entity.getBalance().subtract(evt.getAmount()));
+        mapper.setFtsIndexValue(entity);
+        accountRepository.save(entity);
     }
 
     private static AccountEntity toEntity(AccountOpenedEvent evt) {
@@ -44,10 +61,7 @@ public class AccountEventHandlerService {
                 .setCreatedAt(evt.getTimestamp())
                 .setActive(true)
                 .setBalance(evt.getOpeningBalance())
-                .setId(evt.getAccountHolder());
+                .setId(evt.getId());
     }
 
-    public void handle(BaseEvent baseEvent) {
-
-    }
 }

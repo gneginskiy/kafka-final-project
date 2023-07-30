@@ -23,7 +23,7 @@ spring:
       ack-mode: MANUAL_IMMEDIATE
     consumer:
       bootstrap-servers: localhost:9091
-      group-id: bankaccConsumer
+      group-id: query_api
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer

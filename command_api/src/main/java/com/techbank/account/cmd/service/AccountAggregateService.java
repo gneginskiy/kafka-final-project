@@ -21,10 +21,9 @@ public class AccountAggregateService {
     private final EventStoreRepository eventsRepository;
     private final AccountAggregateRepository accountAggregateRepository;
 
-    public AccountAggregate apply(AccountOpenedEvent event) {
-        AccountAggregate aggregate = accountAggregateRepository.save(toAggregate(event));
+    public void apply(AccountOpenedEvent event) {
+        AccountAggregate aggregate = accountAggregateRepository.save(buildNewAggregate(event));
         eventsRepository.save(toEventEntity(event, aggregate));
-        return aggregate;
     }
 
     public void apply(AccountFundsDepositedEvent event) {
@@ -52,7 +51,7 @@ public class AccountAggregateService {
         return accountAggregateRepository.findById(id).orElse(null);
     }
 
-    private static AccountAggregate toAggregate(AccountOpenedEvent event) {
+    private static AccountAggregate buildNewAggregate(AccountOpenedEvent event) {
         return new AccountAggregate()
                 .setId(event.getId())
                 .setActive(true)
