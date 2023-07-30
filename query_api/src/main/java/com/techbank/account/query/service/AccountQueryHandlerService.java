@@ -6,7 +6,6 @@ import com.techbank.account.query.dto.AccountDto;
 import com.techbank.account.query.dto.PaginatedList;
 import com.techbank.account.query.repository.AccountRepository;
 import com.techbank.account.query.util.Futility;
-import com.techbank.account.query.validation.AccountQueryValidator;
 import com.techbank.account.query.converter.UnifiedMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
