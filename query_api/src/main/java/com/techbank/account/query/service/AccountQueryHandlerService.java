@@ -4,12 +4,10 @@ import com.techbank.account.exception.ApiError;
 import com.techbank.account.query.controller.GetAllRqDetails;
 import com.techbank.account.query.dto.AccountDto;
 import com.techbank.account.query.dto.PaginatedList;
-import com.techbank.account.query.entity.AccountEntity;
 import com.techbank.account.query.repository.AccountRepository;
 import com.techbank.account.query.validation.AccountQueryValidator;
 import converter.UnifiedMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

@@ -21,7 +21,6 @@ public class AccountCommandToEventMapper {
         return new AccountFundsDepositedEvent()
                 .setId(cmd.getId())
                 .setAmount(cmd.getAmount())
-                .setAmount(cmd.getAmount())
                 .setTimestamp(Instant.now().toEpochMilli());
     }
 

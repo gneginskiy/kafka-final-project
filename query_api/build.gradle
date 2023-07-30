@@ -27,6 +27,8 @@ dependencies {
 	implementation project(':shared')
 
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+
 	testImplementation 'org.apache.commons:commons-lang3:3.12.0'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	implementation 'com.google.code.gson:gson:2.10'

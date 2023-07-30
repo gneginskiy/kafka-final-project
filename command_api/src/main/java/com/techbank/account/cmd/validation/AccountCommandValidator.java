@@ -34,7 +34,7 @@ public class AccountCommandValidator {
         var aggregate = aggregateService.getById(cmd.getId());
         checkAccountPresent(cmd, aggregate);
         checkAccountActive(aggregate);
-        AccountValidationAssertions.checkWithdrawalAllowed(aggregate, cmd);
+        checkWithdrawalAllowed(aggregate, cmd);
     }
 
     public void validate(CloseAccountCommand cmd) {
