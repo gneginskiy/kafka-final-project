@@ -88,7 +88,6 @@ public class AccountAggregateService {
                 .setTimestamp(readTimestamp(event));
     }
 
-
     public boolean isReplay() {
         return isReplayInProgress.get();
     }
