@@ -33,7 +33,8 @@ public class AccountReplayService {
             for (var evt : page) {
                 long start = System.currentTimeMillis();
                 aggregateService.apply(evt.getEventData());
-                log.info(evt.getEventType() + " " + (counter++) + " | took " + (System.currentTimeMillis() - start) + " ms");
+                var msg = evt.getEventType() + " " + (counter++) + " | took " + (System.currentTimeMillis() - start) + " ms";
+                log.info(msg);
             }
             pageable = page.nextPageable();
         } while (pageable.isPaged());
