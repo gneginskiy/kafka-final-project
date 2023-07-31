@@ -3,16 +3,19 @@ package com.techbank.account.cmd.service;
 import com.techbank.account.base.events.BaseEvent;
 import com.techbank.account.base.events.EventEntity;
 import com.techbank.account.cmd.aggregates.AccountAggregate;
-import com.techbank.account.cmd.commands.ReplayAccountEventsCommand;
 import com.techbank.account.cmd.repository.AccountAggregateRepository;
 import com.techbank.account.cmd.repository.EventStoreRepository;
 import com.techbank.account.dto.events.*;
+import com.techbank.account.dto.events.admin.AccountsReplayCompletedEvent;
+import com.techbank.account.dto.events.admin.AccountsReplayStartedEvent;
+import com.techbank.account.exception.ApiError;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import static com.techbank.account.cmd.validation.AccountReflectUtil.readId;
 import static com.techbank.account.cmd.validation.AccountReflectUtil.readTimestamp;
 
 @Service
@@ -22,34 +25,40 @@ public class AccountAggregateService {
     private final AccountAggregateRepository accountAggregateRepository;
     private final AccountEventSender eventSender;
 
-    public void apply(AccountOpenedEvent event) {
-        AccountAggregate aggregate = accountAggregateRepository.save(buildNewAggregate(event));
-        eventsRepository.save(toEventEntity(event, aggregate));
-        eventSender.send(event);
+
+    public void apply(BaseEvent evt) {
+        if      (evt instanceof AccountOpenedEvent           e) apply(e);
+        else if (evt instanceof AccountFundsDepositedEvent   e) apply(e);
+        else if (evt instanceof AccountFundsWithdrawnEvent   e) apply(e);
+        else if (evt instanceof AccountClosedEvent           e) apply(e);
+        else throw ApiError.internalServerError("No handler for evt " + evt.getClass(), null);
+        eventSender.send(evt);
     }
 
-    public void apply(AccountFundsDepositedEvent event) {
+    private void apply(AccountOpenedEvent event) {
+        AccountAggregate aggregate = accountAggregateRepository.save(buildNewAggregate(event));
+        if (eventsRepository.existsById(event.getId())) {
+            eventsRepository.save(toEventEntity(event, aggregate));
+        }
+    }
+
+
+    private void apply(AccountFundsDepositedEvent event) {
         var aggregate = fetchAggregate(event);
         aggregate.setBalance(aggregate.getBalance().add(event.getAmount()));
         accountAggregateRepository.save(aggregate);
-        eventsRepository.save(toEventEntity(event, aggregate));
-        eventSender.send(event);
     }
 
-    public void apply(AccountFundsWithdrawnEvent event) {
+    private void apply(AccountFundsWithdrawnEvent event) {
         var aggregate = fetchAggregate(event);
         aggregate.setBalance(aggregate.getBalance().subtract(event.getAmount()));
         accountAggregateRepository.save(aggregate);
-        eventsRepository.save(toEventEntity(event, aggregate));
-        eventSender.send(event);
     }
 
-    public void apply(AccountClosedEvent event) {
+    private void apply(AccountClosedEvent event) {
         var aggregate = fetchAggregate(event);
         aggregate.setActive(false);
         accountAggregateRepository.save(aggregate);
-        eventsRepository.save(toEventEntity(event, aggregate));
-        eventSender.send(event);
     }
 
     private AccountAggregate fetchAggregate(BaseEvent event) {
@@ -77,7 +86,9 @@ public class AccountAggregateService {
                 .setTimestamp(readTimestamp(event));
     }
 
-    public void apply(AccountsReplayStartedEvent evt) {
 
+    private boolean isReplay() {
+        return false;
     }
+
 }

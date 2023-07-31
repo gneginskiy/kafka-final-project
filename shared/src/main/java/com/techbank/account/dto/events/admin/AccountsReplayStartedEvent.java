@@ -1,4 +1,4 @@
-package com.techbank.account.dto.events;
+package com.techbank.account.dto.events.admin;
 
 import com.techbank.account.base.events.BaseEvent;
 import lombok.AllArgsConstructor;

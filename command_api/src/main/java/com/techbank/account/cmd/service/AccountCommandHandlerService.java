@@ -12,13 +12,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Service
 @RequiredArgsConstructor
 public class AccountCommandHandlerService {
-    private final AccountCommandValidator validator;
+    private final AccountCommandValidator     validator;
     private final AccountCommandToEventMapper eventMapper;
-    private final AccountAggregateService aggregateService;
-    private static final AtomicBoolean isReplay = new AtomicBoolean(false);
+    private final AccountAggregateService     aggregateService;
+    private final AccountReplayService        accountReplayService;
+
+    public void handle(ReplayAccountEventsCommand cmd) {
+        accountReplayService.runReplay(cmd);
+    }
 
     public UUID handle(OpenAccountCommand cmd) {
-        checkReplay();
         validator.validate(cmd);
         var event = eventMapper.buildEvent(cmd);
         aggregateService.apply(event);
@@ -27,36 +30,20 @@ public class AccountCommandHandlerService {
 
 
     public void handle(CloseAccountCommand cmd) {
-        checkReplay();
         validator.validate(cmd);
         var event = eventMapper.buildEvent(cmd);
         aggregateService.apply(event);
     }
 
     public void handle(WithdrawFundsCommand cmd) {
-        checkReplay();
         validator.validate(cmd);
         var event = eventMapper.buildEvent(cmd);
         aggregateService.apply(event);
     }
 
     public void handle(DepositFundsCommand cmd) {
-        checkReplay();
         validator.validate(cmd);
         var event = eventMapper.buildEvent(cmd);
         aggregateService.apply(event);
-    }
-
-    public void handle(ReplayAccountEventsCommand cmd) {
-        var event = eventMapper.buildEvent(cmd);
-        isReplay.set(true);
-        aggregateService.apply(event);
-
-        isReplay.set(false);
-    }
-
-
-    private static void checkReplay() {
-        if (isReplay.get()) throw ApiError.internalServerError("Replay in progress...",null);
     }
 }

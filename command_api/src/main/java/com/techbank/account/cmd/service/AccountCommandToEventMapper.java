@@ -5,6 +5,8 @@ import com.techbank.account.base.command.BaseCommand;
 import com.techbank.account.base.events.BaseEvent;
 import com.techbank.account.cmd.commands.*;
 import com.techbank.account.dto.events.*;
+import com.techbank.account.dto.events.admin.AccountsReplayCompletedEvent;
+import com.techbank.account.dto.events.admin.AccountsReplayStartedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +56,9 @@ public class AccountCommandToEventMapper {
 
     public AccountsReplayStartedEvent buildEvent(ReplayAccountEventsCommand cmd) {
         return new AccountsReplayStartedEvent();
+    }
+
+    public AccountsReplayCompletedEvent buildReplayCompletedEvent() {
+        return new AccountsReplayCompletedEvent();
     }
 }

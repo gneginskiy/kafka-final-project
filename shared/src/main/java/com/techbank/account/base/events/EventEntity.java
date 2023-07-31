@@ -16,7 +16,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 public class EventEntity {
     @Id
-    private String id;
+    private UUID id;
     @Indexed(unique = false)
     private UUID aggregateId;
     private Long timestamp;
