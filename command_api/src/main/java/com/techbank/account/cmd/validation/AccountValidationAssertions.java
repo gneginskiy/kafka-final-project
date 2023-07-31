@@ -5,7 +5,6 @@ import com.techbank.account.cmd.aggregates.AccountAggregate;
 import com.techbank.account.cmd.commands.WithdrawFundsCommand;
 
 import static com.techbank.account.cmd.validation.AccountReflectUtil.readAmount;
-import static com.techbank.account.cmd.validation.AccountReflectUtil.readId;
 import static com.techbank.account.cmd.validation.ValidationAssertions.*;
 import static com.techbank.account.cmd.validation.ValidationAssertions.checkTrue;
 
@@ -19,10 +18,10 @@ public class AccountValidationAssertions {
     }
 
     static void checkIdPresent(BaseCommand cmd) {
-        checkFieldNotEmpty(readId(cmd), cmd, "id");
+        checkFieldNotEmpty(cmd.getAggregateId(), cmd, "aggregateId");
     }
     static void checkIdNotPresent(BaseCommand cmd) {
-        checkFieldEmpty(readId(cmd), cmd, "id");
+        checkFieldEmpty(cmd.getAggregateId(), cmd, "aggregateId");
     }
 
     static void checkAccountPresent(BaseCommand cmd, AccountAggregate aggregate) {

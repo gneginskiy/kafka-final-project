@@ -29,24 +29,28 @@ public class AccountAggregateService {
     }
 
     public void apply(AccountFundsDepositedEvent event) {
-        var aggregate = getById(event.getId());
+        var aggregate = fetchAggregate(event);
         aggregate.setBalance(aggregate.getBalance().add(event.getAmount()));
         accountAggregateRepository.save(aggregate);
         eventsRepository.save(toEventEntity(event, aggregate));
     }
 
     public void apply(AccountFundsWithdrawnEvent event) {
-        var aggregate = getById(event.getId());
+        var aggregate = fetchAggregate(event);
         aggregate.setBalance(aggregate.getBalance().subtract(event.getAmount()));
         accountAggregateRepository.save(aggregate);
         eventsRepository.save(toEventEntity(event, aggregate));
     }
 
     public void apply(AccountClosedEvent event) {
-        var aggregate = getById(event.getId());
+        var aggregate = fetchAggregate(event);
         aggregate.setActive(false);
         accountAggregateRepository.save(aggregate);
         eventsRepository.save(toEventEntity(event, aggregate));
+    }
+
+    private AccountAggregate fetchAggregate(BaseEvent event) {
+        return getById(event.getAggregateId());
     }
 
     public AccountAggregate getById(UUID id) {
