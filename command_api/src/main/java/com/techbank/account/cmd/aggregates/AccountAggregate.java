@@ -18,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AccountAggregate {
     @Id
-    private UUID id;
+    private String id;
     private boolean active;
     private BigDecimal balance;
     @Version

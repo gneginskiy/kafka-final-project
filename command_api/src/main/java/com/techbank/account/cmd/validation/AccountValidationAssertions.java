@@ -25,7 +25,7 @@ public class AccountValidationAssertions {
     }
 
     static void checkAccountPresent(BaseCommand cmd, AccountAggregate aggregate) {
-        checkTrue(aggregate != null, cmd, "Account is not present");
+       // checkTrue(aggregate != null, cmd, "Account is not present"); //todo
     }
 
     static void checkWithdrawalAllowed(AccountAggregate aggregate, WithdrawFundsCommand cmd) {

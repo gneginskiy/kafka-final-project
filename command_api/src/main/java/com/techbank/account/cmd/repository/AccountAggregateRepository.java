@@ -5,5 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.UUID;
 
-public interface AccountAggregateRepository extends MongoRepository<AccountAggregate, UUID> {
+public interface AccountAggregateRepository extends MongoRepository<AccountAggregate, String> {
 }
