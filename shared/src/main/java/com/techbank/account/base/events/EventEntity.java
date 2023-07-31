@@ -18,7 +18,6 @@ import java.util.UUID;
 public class EventEntity {
     @Transient
     public static final String SEQUENCE_NAME = "event_id_seq";
-
     @Id
     private Long id;
     @Indexed(unique = false)

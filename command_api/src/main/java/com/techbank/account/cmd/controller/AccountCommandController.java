@@ -25,8 +25,8 @@ public class AccountCommandController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/replay", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void replayAccounts(@RequestBody ReplayAccountEventsCommand cmd) {
-        accountService.handle(cmd);
+    public void replayAccounts() {
+        accountService.handle(new ReplayAccountEventsCommand(null));
     }
     
     @ResponseStatus(HttpStatus.ACCEPTED)
