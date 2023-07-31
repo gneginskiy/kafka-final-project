@@ -5,7 +5,7 @@ import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountOpenedEvent;
 import com.techbank.account.dto.events.AccountFundsDepositedEvent;
 import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
-import com.techbank.account.dto.events.admin.AccountsReplayCompletedEvent;
+import com.techbank.account.dto.events.admin.AccountsReplayStartedEvent;
 import com.techbank.account.dto.events.admin.AdminEvent;
 import com.techbank.account.query.entity.AccountEntity;
 import com.techbank.account.query.entity.LpeEntity;
@@ -31,12 +31,17 @@ public class AccountEventHandlerService {
 
     public void handle(BaseEvent evt) {
         if (isAlreadyProcessed(evt)) return;
+        if (evt instanceof AccountsReplayStartedEvent e) handle(e);
         if (evt instanceof AccountOpenedEvent         e) handle(e);
         if (evt instanceof AccountOpenedEvent         e) handle(e);
         if (evt instanceof AccountFundsDepositedEvent e) handle(e);
         if (evt instanceof AccountFundsWithdrawnEvent e) handle(e);
         if (evt instanceof AccountClosedEvent         e) handle(e);
         saveLastProcessedEventTs(evt);
+    }
+
+    private void handle(AccountsReplayStartedEvent evt) {
+        accountRepository.deleteAll();
     }
 
     private void handle(AccountOpenedEvent evt) {
