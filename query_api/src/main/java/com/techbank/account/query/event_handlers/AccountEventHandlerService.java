@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -22,6 +24,7 @@ public class AccountEventHandlerService {
     private final AccountLpeRepository accountAccountLpeRepository;
     private final AccountRepository    accountRepository;
     private final UnifiedMapper        mapper;
+    private final AtomicBoolean        isReplay;
 
     public void handle(BaseEvent evt) {
         if (isAlreadyProcessed(evt)) return;

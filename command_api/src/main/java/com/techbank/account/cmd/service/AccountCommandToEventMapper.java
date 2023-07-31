@@ -3,14 +3,8 @@ package com.techbank.account.cmd.service;
 import com.fasterxml.uuid.impl.TimeBasedEpochGenerator;
 import com.techbank.account.base.command.BaseCommand;
 import com.techbank.account.base.events.BaseEvent;
-import com.techbank.account.cmd.commands.CloseAccountCommand;
-import com.techbank.account.cmd.commands.DepositFundsCommand;
-import com.techbank.account.cmd.commands.OpenAccountCommand;
-import com.techbank.account.cmd.commands.WithdrawFundsCommand;
-import com.techbank.account.dto.events.AccountClosedEvent;
-import com.techbank.account.dto.events.AccountFundsDepositedEvent;
-import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
-import com.techbank.account.dto.events.AccountOpenedEvent;
+import com.techbank.account.cmd.commands.*;
+import com.techbank.account.dto.events.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -56,5 +50,9 @@ public class AccountCommandToEventMapper {
         return evt.setId(uuidGenerator.generate())
                 .setAggregateId(cmd.getAggregateId())
                 .setTimestamp(Instant.now().toEpochMilli());
+    }
+
+    public AccountsReplayStartedEvent buildEvent(ReplayAccountEventsCommand cmd) {
+        return new AccountsReplayStartedEvent();
     }
 }

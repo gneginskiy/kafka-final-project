@@ -3,12 +3,10 @@ package com.techbank.account.cmd.service;
 import com.techbank.account.base.events.BaseEvent;
 import com.techbank.account.base.events.EventEntity;
 import com.techbank.account.cmd.aggregates.AccountAggregate;
+import com.techbank.account.cmd.commands.ReplayAccountEventsCommand;
 import com.techbank.account.cmd.repository.AccountAggregateRepository;
 import com.techbank.account.cmd.repository.EventStoreRepository;
-import com.techbank.account.dto.events.AccountClosedEvent;
-import com.techbank.account.dto.events.AccountFundsDepositedEvent;
-import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
-import com.techbank.account.dto.events.AccountOpenedEvent;
+import com.techbank.account.dto.events.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +20,12 @@ import static com.techbank.account.cmd.validation.AccountReflectUtil.readTimesta
 public class AccountAggregateService {
     private final EventStoreRepository eventsRepository;
     private final AccountAggregateRepository accountAggregateRepository;
+    private final AccountEventSender eventSender;
 
     public void apply(AccountOpenedEvent event) {
         AccountAggregate aggregate = accountAggregateRepository.save(buildNewAggregate(event));
         eventsRepository.save(toEventEntity(event, aggregate));
+        eventSender.send(event);
     }
 
     public void apply(AccountFundsDepositedEvent event) {
@@ -33,6 +33,7 @@ public class AccountAggregateService {
         aggregate.setBalance(aggregate.getBalance().add(event.getAmount()));
         accountAggregateRepository.save(aggregate);
         eventsRepository.save(toEventEntity(event, aggregate));
+        eventSender.send(event);
     }
 
     public void apply(AccountFundsWithdrawnEvent event) {
@@ -40,6 +41,7 @@ public class AccountAggregateService {
         aggregate.setBalance(aggregate.getBalance().subtract(event.getAmount()));
         accountAggregateRepository.save(aggregate);
         eventsRepository.save(toEventEntity(event, aggregate));
+        eventSender.send(event);
     }
 
     public void apply(AccountClosedEvent event) {
@@ -47,6 +49,7 @@ public class AccountAggregateService {
         aggregate.setActive(false);
         accountAggregateRepository.save(aggregate);
         eventsRepository.save(toEventEntity(event, aggregate));
+        eventSender.send(event);
     }
 
     private AccountAggregate fetchAggregate(BaseEvent event) {
@@ -72,5 +75,9 @@ public class AccountAggregateService {
                 .setEventType(event.getClass().getSimpleName())
                 .setEventData(event)
                 .setTimestamp(readTimestamp(event));
+    }
+
+    public void apply(AccountsReplayStartedEvent evt) {
+
     }
 }

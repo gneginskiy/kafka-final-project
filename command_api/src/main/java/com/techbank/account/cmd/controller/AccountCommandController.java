@@ -1,10 +1,7 @@
 package com.techbank.account.cmd.controller;
 
-import com.techbank.account.cmd.commands.CloseAccountCommand;
-import com.techbank.account.cmd.commands.DepositFundsCommand;
-import com.techbank.account.cmd.commands.OpenAccountCommand;
-import com.techbank.account.cmd.commands.WithdrawFundsCommand;
-import com.techbank.account.cmd.exceptions.ApiError;
+import com.techbank.account.cmd.commands.*;
+import com.techbank.account.exception.ApiError;
 import com.techbank.account.cmd.service.AccountCommandHandlerService;
 import com.techbank.account.exception.ErrorBody;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +23,12 @@ public class AccountCommandController {
 
     private final AccountCommandHandlerService accountService;
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping(path = "/replay", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public void replayAccounts(@RequestBody ReplayAccountEventsCommand cmd) {
+        accountService.handle(cmd);
+    }
+    
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/open", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> openAccount(@RequestBody OpenAccountCommand cmd) {
