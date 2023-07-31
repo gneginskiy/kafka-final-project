@@ -1,7 +1,6 @@
 package com.techbank.account.cmd.service;
 
 import com.techbank.account.cmd.commands.ReplayAccountEventsCommand;
-import com.techbank.account.cmd.repository.AccountAggregateRepository;
 import com.techbank.account.cmd.repository.EventStoreRepository;
 import com.techbank.account.dto.events.admin.AccountsReplayCompletedEvent;
 import com.techbank.account.dto.events.admin.AccountsReplayStartedEvent;
@@ -20,9 +19,9 @@ public class AccountReplayService {
     private final AccountEventSender eventSender;
 
     public void runReplay(ReplayAccountEventsCommand cmd) {
-        aggregateService.replayStarted();
+        aggregateService.replayStart();
         replay();
-        aggregateService.replayCompleted();
+        aggregateService.replayEnd();
     }
 
     public void replay() {

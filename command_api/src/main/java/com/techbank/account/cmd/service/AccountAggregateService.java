@@ -8,13 +8,16 @@ import com.techbank.account.cmd.repository.EventStoreRepository;
 import com.techbank.account.dto.events.*;
 import com.techbank.account.exception.ApiError;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.techbank.account.cmd.validation.AccountReflectUtil.readTimestamp;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountAggregateService {
@@ -88,12 +91,14 @@ public class AccountAggregateService {
         return isReplayInProgress.get();
     }
 
-    public void replayStarted() {
+    public void replayStart() {
+        log.info("Replay started at "+ LocalDateTime.now());
         isReplayInProgress.set(true);
         accountAggregateRepository.deleteAll();
     }
 
-    public void replayCompleted() {
+    public void replayEnd() {
         isReplayInProgress.set(false);
+        log.info("Replay completed at "+ LocalDateTime.now());
     }
 }
