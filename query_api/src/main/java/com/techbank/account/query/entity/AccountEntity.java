@@ -1,6 +1,7 @@
 package com.techbank.account.query.entity;
 
 import com.techbank.account.dto.AccountType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -28,5 +29,6 @@ public class AccountEntity {
     private BigDecimal balance;
     private boolean active;
 
+    @Column(columnDefinition = "TEXT")
     private String ft;
 }

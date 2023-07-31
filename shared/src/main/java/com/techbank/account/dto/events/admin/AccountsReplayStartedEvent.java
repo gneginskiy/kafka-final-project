@@ -8,5 +8,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AccountsReplayStartedEvent extends BaseEvent {
+public class AccountsReplayStartedEvent extends BaseEvent implements AdminEvent {
 }
