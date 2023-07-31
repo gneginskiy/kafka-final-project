@@ -15,24 +15,16 @@ import java.time.Instant;
 @Service
 @RequiredArgsConstructor
 public class AccountCommandToEventMapper {
-    private static final TimeBasedEpochGenerator uuidGenerator = new TimeBasedEpochGenerator(null);
+    private final MongoSequenceGeneratorService sequenceGeneratorService;
 
     public AccountFundsDepositedEvent buildEvent(DepositFundsCommand cmd) {
-        return new AccountFundsDepositedEvent()
-                .setAmount(cmd.getAmount())
-                //base event fields
-                .setAggregateId(cmd.getAggregateId())
-                .setTimestamp(Instant.now().toEpochMilli())
-                .setId(uuidGenerator.generate());
+        var evt = new AccountFundsDepositedEvent().setAmount(cmd.getAmount());
+        return setBaseEventFields(evt,cmd);
     }
 
     public AccountFundsWithdrawnEvent buildEvent(WithdrawFundsCommand cmd) {
-        return new AccountFundsWithdrawnEvent()
-                .setAmount(cmd.getAmount())
-                //base event fields
-                .setId(uuidGenerator.generate())
-                .setAggregateId(cmd.getAggregateId())
-                .setTimestamp(Instant.now().toEpochMilli());
+        var evt = new AccountFundsWithdrawnEvent().setAmount(cmd.getAmount());
+        return setBaseEventFields(evt,cmd);
     }
 
     public AccountClosedEvent buildEvent(CloseAccountCommand cmd) {
@@ -49,16 +41,8 @@ public class AccountCommandToEventMapper {
     }
 
     private <E extends BaseEvent, C extends BaseCommand> E setBaseEventFields(E evt, C cmd) {
-        return evt.setId(uuidGenerator.generate())
+        return evt.setId(sequenceGeneratorService.generateEventIdSeq())
                 .setAggregateId(cmd.getAggregateId())
                 .setTimestamp(Instant.now().toEpochMilli());
-    }
-
-    public AccountsReplayStartedEvent buildEvent(ReplayAccountEventsCommand cmd) {
-        return new AccountsReplayStartedEvent();
-    }
-
-    public AccountsReplayCompletedEvent buildReplayCompletedEvent() {
-        return new AccountsReplayCompletedEvent();
     }
 }

@@ -27,7 +27,6 @@ public class AccountAggregateService {
     private final AccountEventSender eventSender;
     private final AtomicBoolean isReplayInProgress = new AtomicBoolean(false);
 
-
     public void apply(BaseEvent evt) {
         if      (evt instanceof AccountOpenedEvent           e) apply(e);
         else if (evt instanceof AccountFundsDepositedEvent   e) apply(e);
@@ -79,9 +78,9 @@ public class AccountAggregateService {
                 .setVersion(0);
     }
 
-    private static EventEntity toEventEntity(BaseEvent event, AccountAggregate aggregate) {
+    private EventEntity toEventEntity(BaseEvent event, AccountAggregate aggregate) {
         return new EventEntity()
-                .setId(UUID.randomUUID())
+                .setId(event.getId())
                 .setAggregateId(aggregate.getId())
                 .setAggregateType(aggregate.getClass().getSimpleName())
                 .setEventType(event.getClass().getSimpleName())

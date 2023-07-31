@@ -12,10 +12,10 @@ import java.util.UUID;
 public abstract class BaseEvent {
     private int version;
     private UUID aggregateId; //entity applied to
-    private UUID id;          //event id with timestamp
+    private Long id;          //event id with timestamp
     private Long timestamp;
 
-    public <T extends BaseEvent> T setId(UUID id) {
+    public <T extends BaseEvent> T setId(Long id) {
         this.id = id;
         return (T) this;
     }

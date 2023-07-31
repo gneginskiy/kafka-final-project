@@ -20,7 +20,7 @@ public class EventEntity {
     public static final String SEQUENCE_NAME = "event_id_seq";
 
     @Id
-    private String id;
+    private Long id;
     @Indexed(unique = false)
     private UUID aggregateId;
     private Long timestamp;
