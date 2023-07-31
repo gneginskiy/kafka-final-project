@@ -2,16 +2,14 @@ package com.techbank.account.cmd.service;
 
 import com.techbank.account.cmd.commands.*;
 import com.techbank.account.cmd.validation.AccountCommandValidator;
-import com.techbank.account.exception.ApiError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
 @RequiredArgsConstructor
-public class AccountCommandHandlerService {
+public class AccountCommandDispatcher {
     private final AccountCommandValidator     validator;
     private final AccountCommandToEventMapper eventMapper;
     private final AccountAggregateService     aggregateService;

@@ -2,7 +2,7 @@ package com.techbank.account.cmd.controller;
 
 import com.techbank.account.cmd.commands.*;
 import com.techbank.account.exception.ApiError;
-import com.techbank.account.cmd.service.AccountCommandHandlerService;
+import com.techbank.account.cmd.service.AccountCommandDispatcher;
 import com.techbank.account.exception.ErrorBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AccountCommandController {
     public static final String API_URL = "/api/v1/account/";
 
-    private final AccountCommandHandlerService accountService;
+    private final AccountCommandDispatcher accountService;
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/replay", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
