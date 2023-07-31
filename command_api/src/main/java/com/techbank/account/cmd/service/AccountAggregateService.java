@@ -9,6 +9,7 @@ import com.techbank.account.dto.events.*;
 import com.techbank.account.exception.ApiError;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class AccountAggregateService {
     private final AccountAggregateRepository accountAggregateRepository;
     private final AccountEventSender eventSender;
     private final AtomicBoolean isReplayInProgress = new AtomicBoolean(false);
+
 
     public void apply(BaseEvent evt) {
         if      (evt instanceof AccountOpenedEvent           e) apply(e);
@@ -79,6 +81,7 @@ public class AccountAggregateService {
 
     private static EventEntity toEventEntity(BaseEvent event, AccountAggregate aggregate) {
         return new EventEntity()
+                .setId(UUID.randomUUID())
                 .setAggregateId(aggregate.getId())
                 .setAggregateType(aggregate.getClass().getSimpleName())
                 .setEventType(event.getClass().getSimpleName())
