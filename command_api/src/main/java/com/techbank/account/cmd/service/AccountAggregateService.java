@@ -38,21 +38,21 @@ public class AccountAggregateService {
 
     private void apply(AccountOpenedEvent event) {
         AccountAggregate aggregate = accountAggregateRepository.save(buildNewAggregate(event));
-        eventsRepository.save(toEventEntity(event, aggregate));
+        if (!isReplay()) eventsRepository.save(toEventEntity(event, aggregate));
     }
 
     private void apply(AccountFundsDepositedEvent event) {
         var aggregate = fetchAggregate(event);
         aggregate.setBalance(aggregate.getBalance().add(event.getAmount()));
         accountAggregateRepository.save(aggregate);
-        eventsRepository.save(toEventEntity(event, aggregate));
+        if (!isReplay()) eventsRepository.save(toEventEntity(event, aggregate));
     }
 
     private void apply(AccountFundsWithdrawnEvent event) {
         var aggregate = fetchAggregate(event);
         aggregate.setBalance(aggregate.getBalance().subtract(event.getAmount()));
         accountAggregateRepository.save(aggregate);
-        eventsRepository.save(toEventEntity(event, aggregate));
+        if (!isReplay()) eventsRepository.save(toEventEntity(event, aggregate));
     }
 
     private void apply(AccountClosedEvent event) {
