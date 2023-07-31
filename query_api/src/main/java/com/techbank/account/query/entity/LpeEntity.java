@@ -1,7 +1,8 @@
 package com.techbank.account.query.entity;
 
+import com.techbank.account.base.events.BaseEvent;
 import com.techbank.account.dto.AccountType;
-import jakarta.persistence.Column;
+import com.techbank.account.dto.events.AccountOpenedEvent;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -20,15 +20,13 @@ import java.util.UUID;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AccountEntity {
+public class LpeEntity {
+    public static final LpeEntity DEFAULT = new LpeEntity(0L,0L);
     @Id
-    private String id;
-    private String accountHolder;
-    private Long createdAt;
-    private AccountType accountType;
-    private BigDecimal balance;
-    private boolean active;
+    private Long id;
+    private Long ts;
 
-    @Column(columnDefinition = "TEXT")
-    private String ft;
+    public static LpeEntity of(BaseEvent evt) {
+        return new LpeEntity(0L, evt.getTimestamp());
+    }
 }

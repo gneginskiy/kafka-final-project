@@ -1,7 +1,6 @@
 package com.techbank.account.cmd.validation;
 
-import com.techbank.account.cmd.exceptions.ApiError;
-import org.apache.kafka.common.protocol.types.Field;
+import com.techbank.account.exception.ApiError;
 
 import java.math.BigDecimal;
 import java.util.Collection;

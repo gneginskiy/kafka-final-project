@@ -1,48 +1,47 @@
 package com.techbank.account.cmd.service;
 
-import com.techbank.account.cmd.commands.CloseAccountCommand;
-import com.techbank.account.cmd.commands.DepositFundsCommand;
-import com.techbank.account.cmd.commands.OpenAccountCommand;
-import com.techbank.account.cmd.commands.WithdrawFundsCommand;
-import com.techbank.account.dto.events.AccountClosedEvent;
-import com.techbank.account.dto.events.AccountFundsDepositedEvent;
-import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
-import com.techbank.account.dto.events.AccountOpenedEvent;
+import com.techbank.account.base.command.BaseCommand;
+import com.techbank.account.base.events.BaseEvent;
+import com.techbank.account.cmd.commands.*;
+import com.techbank.account.dto.events.*;
+import com.techbank.account.dto.events.admin.AccountsReplayCompletedEvent;
+import com.techbank.account.dto.events.admin.AccountsReplayStartedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AccountCommandToEventMapper {
+    private final MongoSequenceGeneratorService sequenceGeneratorService;
+
     public AccountFundsDepositedEvent buildEvent(DepositFundsCommand cmd) {
-        return new AccountFundsDepositedEvent()
-                .setId(cmd.getId())
-                .setAmount(cmd.getAmount())
-                .setTimestamp(Instant.now().toEpochMilli());
+        var evt = new AccountFundsDepositedEvent().setAmount(cmd.getAmount());
+        return setBaseEventFields(evt,cmd);
     }
 
     public AccountFundsWithdrawnEvent buildEvent(WithdrawFundsCommand cmd) {
-        return new AccountFundsWithdrawnEvent()
-                .setId(cmd.getId())
-                .setAmount(cmd.getAmount())
-                .setTimestamp(Instant.now().toEpochMilli());
+        var evt = new AccountFundsWithdrawnEvent().setAmount(cmd.getAmount());
+        return setBaseEventFields(evt,cmd);
     }
 
     public AccountClosedEvent buildEvent(CloseAccountCommand cmd) {
-        return new AccountClosedEvent()
-                .setId(cmd.getId())
-                .setTimestamp(Instant.now().toEpochMilli());
+        var evt = new AccountClosedEvent();
+        return setBaseEventFields(evt,cmd);
     }
 
     public AccountOpenedEvent buildEvent(OpenAccountCommand cmd) {
-        return new AccountOpenedEvent()
-                .setId(UUID.randomUUID().toString())
+        var evt = new AccountOpenedEvent()
                 .setAccountHolder(cmd.getAccountHolder())
                 .setAccountType(cmd.getAccountType())
-                .setOpeningBalance(cmd.getOpeningBalance())
+                .setOpeningBalance(cmd.getOpeningBalance());
+        return setBaseEventFields(evt,cmd);
+    }
+
+    private <E extends BaseEvent, C extends BaseCommand> E setBaseEventFields(E evt, C cmd) {
+        return evt.setId(sequenceGeneratorService.generateEventIdSeq())
+                .setAggregateId(cmd.getAggregateId())
                 .setTimestamp(Instant.now().toEpochMilli());
     }
 }

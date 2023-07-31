@@ -18,8 +18,8 @@ public class AccountQueryHandlerService {
     private final AccountRepository accountRepository;
     private final UnifiedMapper mapper;
 
-    public AccountDto get(UUID id) {
-        return accountRepository.findById(id.toString())
+    public AccountDto get(String id) {
+        return accountRepository.findById(id)
                 .map(a->Futility.deepClone(a,AccountDto.class))
                 .orElseThrow(() -> ApiError.notFound(AccountDto.class, id, null));
     }

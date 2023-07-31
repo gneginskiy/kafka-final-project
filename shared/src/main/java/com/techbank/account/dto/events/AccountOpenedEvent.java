@@ -7,19 +7,15 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AccountOpenedEvent implements BaseEvent {
-    private String id;
-    private int version;
-    private Long timestamp;
-
+public class AccountOpenedEvent extends BaseEvent {
     private String      accountHolder;
     private AccountType accountType;
     private BigDecimal  openingBalance;
-
 }

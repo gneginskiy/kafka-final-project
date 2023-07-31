@@ -13,7 +13,6 @@ import static com.techbank.account.query.util.Futility.toFtsIndex;
 public abstract class UnifiedMapper {
     //account mappers
     public abstract AccountDto toDto(AccountEntity entity);
-    public abstract AccountEntity toEntity(AccountDto dto);
 
     @AfterMapping //to hibernate layer.
     public void setFtsIndexValue(@MappingTarget Object entity) {

@@ -38,7 +38,7 @@ public class ApiError extends RuntimeException {
         return new ApiError(null, HttpStatus.TOO_MANY_REQUESTS, "Too many requests...", null);
     }
 
-    public static ApiError dataIntegrityViolated(Class clazz, UUID id, Class referrencingClass) {
+    public static ApiError dataIntegrityViolated(Class clazz, String id, Class referrencingClass) {
         throw ApiError.badRequest(clazz, id,
                 "Data integrity violated: cannot remove the " +
                         clazz + " referenced by an " + referrencingClass

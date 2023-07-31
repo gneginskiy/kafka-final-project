@@ -6,16 +6,13 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Accessors(chain = true)
-public class AccountFundsDepositedEvent implements BaseEvent {
-    private String id;
-    private int version;
-    private Long timestamp;
-
+public class AccountFundsDepositedEvent extends BaseEvent {
     private BigDecimal amount;
 }

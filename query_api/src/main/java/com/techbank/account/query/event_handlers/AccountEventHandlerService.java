@@ -5,27 +5,43 @@ import com.techbank.account.dto.events.AccountClosedEvent;
 import com.techbank.account.dto.events.AccountOpenedEvent;
 import com.techbank.account.dto.events.AccountFundsDepositedEvent;
 import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
-import com.techbank.account.exception.ApiError;
+import com.techbank.account.dto.events.admin.AccountsReplayStartedEvent;
+import com.techbank.account.dto.events.admin.AdminEvent;
 import com.techbank.account.query.entity.AccountEntity;
+import com.techbank.account.query.entity.LpeEntity;
 import com.techbank.account.query.repository.AccountRepository;
 import com.techbank.account.query.converter.UnifiedMapper;
+import com.techbank.account.query.repository.AccountLpeRepository;
+import com.techbank.account.query.util.Futility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.reflect.MethodUtils;
+import org.apache.kafka.clients.admin.Admin;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class AccountEventHandlerService {
-    private final AccountRepository accountRepository;
-    private final UnifiedMapper mapper;
+    private final AccountLpeRepository accountAccountLpeRepository;
+    private final AccountRepository    accountRepository;
+    private final UnifiedMapper        mapper;
+    private static final AtomicBoolean isReplay = new AtomicBoolean(false);
 
     public void handle(BaseEvent evt) {
+        if (isAlreadyProcessed(evt)) return;
+        if (evt instanceof AccountsReplayStartedEvent e) handle(e);
+        if (evt instanceof AccountOpenedEvent         e) handle(e);
         if (evt instanceof AccountOpenedEvent         e) handle(e);
         if (evt instanceof AccountFundsDepositedEvent e) handle(e);
         if (evt instanceof AccountFundsWithdrawnEvent e) handle(e);
         if (evt instanceof AccountClosedEvent         e) handle(e);
+        saveLastProcessedEventTs(evt);
+    }
+
+    private void handle(AccountsReplayStartedEvent evt) {
+        accountRepository.deleteAll();
     }
 
     private void handle(AccountOpenedEvent evt) {
@@ -35,20 +51,23 @@ public class AccountEventHandlerService {
     }
 
     private void handle(AccountClosedEvent evt) {
-        var entity = accountRepository.findById(evt.getId()).orElseThrow().setActive(false);
+        var entity = accountRepository.findById(evt.getAggregateId()).orElse(null);
+        if (entity==null) return; //&&isReplay.get(). else -> throw
         mapper.setFtsIndexValue(entity);
         accountRepository.save(entity);
     }
 
     private void handle(AccountFundsDepositedEvent evt) {
-        var entity = accountRepository.findById(evt.getId()).orElseThrow();
+        var entity = accountRepository.findById(evt.getAggregateId()).orElse(null);
+        if (entity==null) return;
         entity.setBalance(entity.getBalance().add(evt.getAmount()));
         mapper.setFtsIndexValue(entity);
         accountRepository.save(entity);
     }
 
     private void handle(AccountFundsWithdrawnEvent evt) {
-        var entity = accountRepository.findById(evt.getId()).orElseThrow();
+        var entity = accountRepository.findById(evt.getAggregateId()).orElse(null);
+        if (entity==null) return;
         entity.setBalance(entity.getBalance().subtract(evt.getAmount()));
         mapper.setFtsIndexValue(entity);
         accountRepository.save(entity);
@@ -61,7 +80,21 @@ public class AccountEventHandlerService {
                 .setCreatedAt(evt.getTimestamp())
                 .setActive(true)
                 .setBalance(evt.getOpeningBalance())
-                .setId(evt.getId());
+                .setId(evt.getAggregateId());
     }
 
+    private void saveLastProcessedEventTs(BaseEvent evt) {
+        if (evt instanceof AdminEvent) return;
+        accountAccountLpeRepository.save(LpeEntity.of(evt));
+    }
+
+    private boolean isAlreadyProcessed(BaseEvent evt) {
+        if (evt instanceof AdminEvent) return false;
+        var currentLpe = accountAccountLpeRepository.findById(0L).orElse(LpeEntity.DEFAULT).getTs();
+        if (evt.getTimestamp() != null && currentLpe > evt.getTimestamp()) {
+            log.info("Skipping event " + evt.getClass() + " " + Futility.toJson(evt));
+            return true;
+        }
+        return false;
+    }
 }

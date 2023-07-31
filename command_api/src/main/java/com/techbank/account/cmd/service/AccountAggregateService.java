@@ -5,66 +5,101 @@ import com.techbank.account.base.events.EventEntity;
 import com.techbank.account.cmd.aggregates.AccountAggregate;
 import com.techbank.account.cmd.repository.AccountAggregateRepository;
 import com.techbank.account.cmd.repository.EventStoreRepository;
-import com.techbank.account.dto.events.AccountClosedEvent;
-import com.techbank.account.dto.events.AccountFundsDepositedEvent;
-import com.techbank.account.dto.events.AccountFundsWithdrawnEvent;
-import com.techbank.account.dto.events.AccountOpenedEvent;
+import com.techbank.account.dto.events.*;
+import com.techbank.account.exception.ApiError;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
-import static com.techbank.account.cmd.validation.AccountReflectUtil.readId;
+import java.time.LocalDateTime;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static com.techbank.account.cmd.validation.AccountReflectUtil.readTimestamp;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountAggregateService {
     private final EventStoreRepository eventsRepository;
     private final AccountAggregateRepository accountAggregateRepository;
+    private final AccountEventSender eventSender;
+    private final AtomicBoolean isReplayInProgress = new AtomicBoolean(false);
 
-    public void apply(AccountOpenedEvent event) {
-        AccountAggregate aggregate = accountAggregateRepository.save(buildNewAggregate(event));
-        eventsRepository.save(toEventEntity(event, aggregate));
+    public void apply(BaseEvent evt) {
+        if      (evt instanceof AccountOpenedEvent           e) apply(e);
+        else if (evt instanceof AccountFundsDepositedEvent   e) apply(e);
+        else if (evt instanceof AccountFundsWithdrawnEvent   e) apply(e);
+        else if (evt instanceof AccountClosedEvent           e) apply(e);
+        else throw ApiError.internalServerError("No handler for evt " + evt.getClass(), null);
+        eventSender.send(evt);
     }
 
-    public void apply(AccountFundsDepositedEvent event) {
-        var aggregate = getById(event.getId());
+    private void apply(AccountOpenedEvent event) {
+        AccountAggregate aggregate = accountAggregateRepository.save(buildNewAggregate(event));
+        if (!isReplay()) eventsRepository.save(toEventEntity(event, aggregate));
+    }
+
+    private void apply(AccountFundsDepositedEvent event) {
+        var aggregate = fetchAggregate(event);
         aggregate.setBalance(aggregate.getBalance().add(event.getAmount()));
         accountAggregateRepository.save(aggregate);
-        eventsRepository.save(toEventEntity(event, aggregate));
+        if (!isReplay()) eventsRepository.save(toEventEntity(event, aggregate));
     }
 
-    public void apply(AccountFundsWithdrawnEvent event) {
-        var aggregate = getById(event.getId());
+    private void apply(AccountFundsWithdrawnEvent event) {
+        var aggregate = fetchAggregate(event);
         aggregate.setBalance(aggregate.getBalance().subtract(event.getAmount()));
         accountAggregateRepository.save(aggregate);
-        eventsRepository.save(toEventEntity(event, aggregate));
+        if (!isReplay()) eventsRepository.save(toEventEntity(event, aggregate));
     }
 
-    public void apply(AccountClosedEvent event) {
-        var aggregate = getById(event.getId());
+    private void apply(AccountClosedEvent event) {
+        var aggregate = fetchAggregate(event);
         aggregate.setActive(false);
         accountAggregateRepository.save(aggregate);
-        eventsRepository.save(toEventEntity(event, aggregate));
+        if (!isReplay()) eventsRepository.save(toEventEntity(event, aggregate));
+    }
+
+    private AccountAggregate fetchAggregate(BaseEvent event) {
+        return getById(event.getAggregateId());
     }
 
     public AccountAggregate getById(String id) {
-        return accountAggregateRepository.findById(id).orElse(null);
+        return accountAggregateRepository.findById(id.toString()).orElse(null);
     }
 
     private static AccountAggregate buildNewAggregate(AccountOpenedEvent event) {
         return new AccountAggregate()
-                .setId(event.getId())
+                .setId(event.getAggregateId().toString())
                 .setActive(true)
                 .setBalance(event.getOpeningBalance())
                 .setVersion(0);
     }
 
-    private static EventEntity toEventEntity(BaseEvent event, AccountAggregate aggregate) {
+    private EventEntity toEventEntity(BaseEvent event, AccountAggregate aggregate) {
         return new EventEntity()
-                .setAggregateId(readId(aggregate))
+                .setId(event.getId())
+                .setAggregateId(aggregate.getId())
                 .setAggregateType(aggregate.getClass().getSimpleName())
                 .setEventType(event.getClass().getSimpleName())
                 .setEventData(event)
                 .setTimestamp(readTimestamp(event));
+    }
+
+    public boolean isReplay() {
+        return isReplayInProgress.get();
+    }
+
+    public void replayStart() {
+        log.info("Replay started at "+ LocalDateTime.now());
+        isReplayInProgress.set(true);
+        accountAggregateRepository.deleteAll();
+    }
+
+    public void replayEnd() {
+        isReplayInProgress.set(false);
+        log.info("Replay completed at "+ LocalDateTime.now());
     }
 }
