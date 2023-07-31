@@ -19,8 +19,7 @@ public class EventConsumerService {
     @KafkaListener(topics = {"account-events-v1"},groupId = "${spring.kafka.consumer.group-id}")
     public void consume(@Payload BaseEvent baseEvent, Acknowledgment ack) {
         accountEventHandlerService.handle(baseEvent);
-        log.error("ой "+ Futility.toJson(baseEvent));
+        log.info("Event received " + baseEvent.getClass() + " " + Futility.toJson(baseEvent));
         ack.acknowledge();
     }
-
 }
