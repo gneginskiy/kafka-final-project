@@ -21,7 +21,7 @@ public class EventEntity {
     @Id
     private Long id;
     @Indexed(unique = false)
-    private UUID aggregateId;
+    private String aggregateId;
     private Long timestamp;
     private String aggregateType;
     private String eventType;

@@ -66,7 +66,7 @@ public class AccountAggregateService {
         return getById(event.getAggregateId());
     }
 
-    public AccountAggregate getById(UUID id) {
+    public AccountAggregate getById(String id) {
         return accountAggregateRepository.findById(id.toString()).orElse(null);
     }
 
@@ -81,7 +81,7 @@ public class AccountAggregateService {
     private EventEntity toEventEntity(BaseEvent event, AccountAggregate aggregate) {
         return new EventEntity()
                 .setId(event.getId())
-                .setAggregateId(UUID.fromString(aggregate.getId()))
+                .setAggregateId(aggregate.getId())
                 .setAggregateType(aggregate.getClass().getSimpleName())
                 .setEventType(event.getClass().getSimpleName())
                 .setEventData(event)

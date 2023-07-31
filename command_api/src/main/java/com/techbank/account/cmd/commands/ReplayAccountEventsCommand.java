@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Data
 public class ReplayAccountEventsCommand extends BaseCommand {
-    public ReplayAccountEventsCommand(UUID aggregateId) {
+    public ReplayAccountEventsCommand(String aggregateId) {
         super(null);
     }
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public abstract class BaseEvent {
     private int version;
-    private UUID aggregateId; //entity applied to
+    private String aggregateId; //entity applied to
     private Long id;          //event id with timestamp
     private Long timestamp;
 
@@ -20,7 +20,7 @@ public abstract class BaseEvent {
         return (T) this;
     }
 
-    public <T extends BaseEvent> T setAggregateId(UUID aggregateId) {
+    public <T extends BaseEvent> T setAggregateId(String aggregateId) {
         this.aggregateId = aggregateId;
         return (T) this;
     }

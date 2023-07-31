@@ -21,7 +21,7 @@ import java.util.UUID;
 @Accessors(chain = true)
 public class AccountEntity {
     @Id
-    private UUID id;
+    private String id;
     private String accountHolder;
     private Long createdAt;
     private AccountType accountType;

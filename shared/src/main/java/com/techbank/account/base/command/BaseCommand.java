@@ -10,5 +10,5 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaseCommand{
-    private UUID aggregateId;
+    private String aggregateId;
 }

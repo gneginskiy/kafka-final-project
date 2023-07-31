@@ -31,7 +31,7 @@ public class AccountQueryController {
     }
 
     @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
-    public AccountDto get(@PathVariable UUID id) {
+    public AccountDto get(@PathVariable String id) {
         return accountService.get(id);
     }
 

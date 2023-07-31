@@ -19,7 +19,7 @@ public class AccountCommandDispatcher {
         accountReplayService.runReplay(cmd);
     }
 
-    public UUID handle(OpenAccountCommand cmd) {
+    public String handle(OpenAccountCommand cmd) {
         validator.validate(cmd);
         var event = eventMapper.buildEvent(cmd);
         aggregateService.apply(event);

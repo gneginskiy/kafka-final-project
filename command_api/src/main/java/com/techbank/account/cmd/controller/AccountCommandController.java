@@ -32,26 +32,26 @@ public class AccountCommandController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/open", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> openAccount(@RequestBody OpenAccountCommand cmd) {
-        cmd.setAggregateId(UUID.randomUUID());
+        cmd.setAggregateId(UUID.randomUUID().toString());
         return ResponseEntity.ok(accountService.handle(cmd));
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/{id}/close", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void closeAccount(@PathVariable("id") UUID id) {
+    public void closeAccount(@PathVariable("id") String id) {
         accountService.handle(new CloseAccountCommand(id));
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/{id}/withdraw", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void withdraw(@RequestBody WithdrawFundsCommand cmd, @PathVariable("id") UUID id) {
+    public void withdraw(@RequestBody WithdrawFundsCommand cmd, @PathVariable("id") String id) {
         cmd.setAggregateId(id);
         accountService.handle(cmd);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(path = "/{id}/deposit", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    public void deposit(@RequestBody DepositFundsCommand cmd, @PathVariable("id") UUID id) {
+    public void deposit(@RequestBody DepositFundsCommand cmd, @PathVariable("id") String id) {
         cmd.setAggregateId(id);
         accountService.handle(cmd);
     }

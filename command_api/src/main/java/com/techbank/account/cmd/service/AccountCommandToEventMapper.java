@@ -1,6 +1,5 @@
 package com.techbank.account.cmd.service;
 
-import com.fasterxml.uuid.impl.TimeBasedEpochGenerator;
 import com.techbank.account.base.command.BaseCommand;
 import com.techbank.account.base.events.BaseEvent;
 import com.techbank.account.cmd.commands.*;
