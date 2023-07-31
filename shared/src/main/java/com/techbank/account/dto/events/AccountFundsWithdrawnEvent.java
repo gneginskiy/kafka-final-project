@@ -13,8 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Accessors(chain = true)
+
 public class AccountFundsWithdrawnEvent extends BaseEvent {
-    private int version;
-    private Long timestamp;
     private BigDecimal amount;
 }

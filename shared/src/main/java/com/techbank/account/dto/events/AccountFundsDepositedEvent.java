@@ -14,6 +14,5 @@ import java.util.UUID;
 @Setter
 @Accessors(chain = true)
 public class AccountFundsDepositedEvent extends BaseEvent {
-    private int version;
     private BigDecimal amount;
 }

@@ -8,10 +8,9 @@ import lombok.experimental.Accessors;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-@Accessors(chain = true)
 public abstract class BaseEvent {
+    private int version;
     private UUID aggregateId; //entity applied to
     private UUID id;          //event id with timestamp
     private Long timestamp;
