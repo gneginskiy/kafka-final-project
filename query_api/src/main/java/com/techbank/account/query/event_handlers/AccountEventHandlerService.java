@@ -15,7 +15,6 @@ import com.techbank.account.query.repository.AccountLpeRepository;
 import com.techbank.account.query.util.Futility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.admin.Admin;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -53,6 +52,7 @@ public class AccountEventHandlerService {
     private void handle(AccountClosedEvent evt) {
         var entity = accountRepository.findById(evt.getAggregateId()).orElse(null);
         if (entity==null) return; //&&isReplay.get(). else -> throw
+        entity.setActive(false);
         mapper.setFtsIndexValue(entity);
         accountRepository.save(entity);
     }
@@ -90,8 +90,8 @@ public class AccountEventHandlerService {
 
     private boolean isAlreadyProcessed(BaseEvent evt) {
         if (evt instanceof AdminEvent) return false;
-        var currentLpe = accountAccountLpeRepository.findById(0L).orElse(LpeEntity.DEFAULT).getTs();
-        if (evt.getTimestamp() != null && currentLpe > evt.getTimestamp()) {
+        var currentLpeId = accountAccountLpeRepository.findById(0L).orElse(LpeEntity.DEFAULT).getLpeId();
+        if (evt.getTimestamp() != null && currentLpeId > evt.getId()) {
             log.info("Skipping event " + evt.getClass() + " " + Futility.toJson(evt));
             return true;
         }

@@ -16,6 +16,7 @@ public abstract class UnifiedMapper {
 
     @AfterMapping //to hibernate layer.
     public void setFtsIndexValue(@MappingTarget Object entity) {
+        Futility.tryToSet(entity, "ft", () -> null);
         Futility.tryToSet(entity, "ft", () -> toFtsIndex(entity));
     }
 }
